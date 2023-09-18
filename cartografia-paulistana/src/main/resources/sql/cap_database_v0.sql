@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS OBRA(
     codigo_original VARCHAR(30) NOT NULL,
     uso_atual VARCHAR(30),
     codigo_atual VARCHAR(30),
-    status VARCHAR(30),
+    condicao VARCHAR(30),
     ano_demolicao INT,
     ano_reforma INT,
     referencias VARCHAR(1024) NOT NULL,

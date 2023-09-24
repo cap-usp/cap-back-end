@@ -17,7 +17,8 @@ app.get(/.*/, function (req, res) {
 //work, don't set a port in the heroku dashboard. while the
 //5000 or whatever number you set will be for your local
 //machine.
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 8080
+const port = 8080
 app.listen(port)
 console.log(`app is listening on port: ${port}`)
 

@@ -7,6 +7,8 @@
     "start": "node start.js",
     "build": "vite build",
     "preview": "vite preview --port 8080 --host",
+    "preview2": "vite preview",
+    "serve": "vue-cli-service serve --host localhost",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {

@@ -26,4 +26,10 @@ public class Construtora {
 	@Column(name = "nome", nullable = false, length = 30)
 	private String nome;
 
+	public void update(Construtora updatedConstrutora) {
+		if (updatedConstrutora.nome != null) {
+			this.nome = updatedConstrutora.nome;
+		}
+	}
+
 }

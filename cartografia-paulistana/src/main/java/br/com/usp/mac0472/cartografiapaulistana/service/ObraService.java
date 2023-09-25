@@ -5,9 +5,11 @@ import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
 import br.com.usp.mac0472.cartografiapaulistana.repository.ObraRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ObraService {
 
     @Autowired

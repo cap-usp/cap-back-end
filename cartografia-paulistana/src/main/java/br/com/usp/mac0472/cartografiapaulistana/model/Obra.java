@@ -77,4 +77,59 @@ public class Obra {
 	@Column(name = "referencias", nullable = false, length = 1024)
 	private String referencias;
 
+	public void update(Obra updatedObra) {
+		if (updatedObra.latitude != null) {
+			this.latitude = updatedObra.latitude;
+		}
+		if (updatedObra.longitude != null) {
+			this.longitude = updatedObra.longitude;
+		}
+		if (updatedObra.construtora != null) {
+			this.construtora = updatedObra.construtora;
+		}
+		if (updatedObra.nomeOficial != null) {
+			this.nomeOficial = updatedObra.nomeOficial;
+		}
+		if (updatedObra.anoProjeto != null) {
+			this.anoProjeto = updatedObra.anoProjeto;
+		}
+		if (updatedObra.anoConstrucao != null) {
+			this.anoConstrucao = updatedObra.anoConstrucao;
+		}
+		if (updatedObra.condephaat != null) {
+			this.condephaat = updatedObra.condephaat;
+		}
+		if (updatedObra.conpresp != null) {
+			this.conpresp = updatedObra.conpresp;
+		}
+		if (updatedObra.iphan != null) {
+			this.iphan = updatedObra.iphan;
+		}
+		if (updatedObra.usoOriginal != null) {
+			this.usoOriginal = updatedObra.usoOriginal;
+		}
+		if (updatedObra.codigoOriginal != null) {
+			this.codigoOriginal = updatedObra.codigoOriginal;
+		}
+		if (updatedObra.usoAtual != null) {
+			this.usoAtual = updatedObra.usoAtual;
+		}
+		if (updatedObra.codigoAtual != null) {
+			this.codigoAtual = updatedObra.codigoAtual;
+		}
+		if (updatedObra.condicao != null) {
+			this.condicao = updatedObra.condicao;
+		}
+		if (updatedObra.anoDemolicao != null) {
+			this.anoDemolicao = updatedObra.anoDemolicao;
+		}
+		if (updatedObra.anoReforma != null) {
+			this.anoReforma = updatedObra.anoReforma;
+		}
+		if (updatedObra.referencias != null) {
+			this.referencias = updatedObra.referencias;
+		}
+
+	}
+
 }

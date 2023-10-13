@@ -32,4 +32,15 @@ public class Arquiteto {
 	@Column(name = "sobrenome", length = 30)
 	private String sobrenome;
 
+	public void update(Arquiteto updatedArquiteto) {
+		if (updatedArquiteto.nome != null) {
+			this.nome = updatedArquiteto.nome;
+		}
+		if (updatedArquiteto.nomeMeio != null) {
+			this.nomeMeio = updatedArquiteto.nomeMeio;
+		}
+		if (updatedArquiteto.sobrenome != null) {
+			this.sobrenome = updatedArquiteto.sobrenome;
+		}
+	}
 }

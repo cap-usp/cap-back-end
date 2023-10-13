@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Endereco {
+public class EnderecoObra {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

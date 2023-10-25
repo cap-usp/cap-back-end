@@ -20,7 +20,7 @@ public class ArquitetoService {
 	}
 
 	public Arquiteto readArquiteto(Integer id) {
-		return repository.getReferenceById(id);
+		return repository.findById(id).get();
 	}
 
 	@Transactional

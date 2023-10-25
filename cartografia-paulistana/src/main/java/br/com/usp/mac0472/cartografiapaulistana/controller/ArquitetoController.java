@@ -40,7 +40,7 @@ public class ArquitetoController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Arquiteto> createArquiteto(Arquiteto arquiteto) {
+	public ResponseEntity<Arquiteto> createArquiteto(@RequestBody Arquiteto arquiteto) {
 		Arquiteto arquitetoCreated = service.createArquiteto(arquiteto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(arquitetoCreated);
 	}

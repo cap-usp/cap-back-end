@@ -40,7 +40,7 @@ public class ConstrutoraController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Construtora> createConstrutora(Construtora construtora) {
+	public ResponseEntity<Construtora> createConstrutora(@RequestBody Construtora construtora) {
 		Construtora construtoraCreated = service.createConstrutora(construtora);
 		return ResponseEntity.status(HttpStatus.CREATED).body(construtoraCreated);
 	}

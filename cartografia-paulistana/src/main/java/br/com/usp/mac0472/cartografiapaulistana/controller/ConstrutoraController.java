@@ -1,8 +1,10 @@
 package br.com.usp.mac0472.cartografiapaulistana.controller;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,16 +27,16 @@ public class ConstrutoraController {
 	private ConstrutoraService service;
 
 	@GetMapping
-	public ResponseEntity<List<Construtora>> getConstrutoras() {
-		List<Construtora> construtoras = service.readConstrutoras();
+	public ResponseEntity<Page<Construtora>> getConstrutoras(Pageable pageable) {
+		Page<Construtora> construtoras = service.readConstrutoras(pageable);
 		return ResponseEntity.ok(construtoras);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Construtora> getConstrutora(@PathVariable Integer id) {
-		Construtora construtora = service.readConstrutora(id);
-		if (construtora != null) {
-			return ResponseEntity.ok(construtora);
+		Optional<Construtora> construtora = service.readConstrutora(id);
+		if (construtora.isPresent()) {
+			return ResponseEntity.ok(construtora.get());
 		}
 		return ResponseEntity.notFound().build();
 	}
@@ -57,11 +59,8 @@ public class ConstrutoraController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteConstrutora(@PathVariable Integer id) {
-		boolean deleted = service.deleteConstrutora(id);
-		if (deleted) {
-			return ResponseEntity.noContent().build();
-		}
-		return ResponseEntity.notFound().build();
+		service.deleteConstrutora(id);
+		return ResponseEntity.noContent().build();
 	}
 
 }

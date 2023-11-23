@@ -1,8 +1,10 @@
 package br.com.usp.mac0472.cartografiapaulistana.service;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.usp.mac0472.cartografiapaulistana.model.Construtora;
@@ -15,12 +17,12 @@ public class ConstrutoraService {
 	@Autowired
 	private ConstrutoraRepository repository;
 
-	public List<Construtora> readConstrutoras() {
-		return repository.findAll();
+	public Page<Construtora> readConstrutoras(Pageable pageable) {
+		return repository.findAll(pageable);
 	}
 
-	public Construtora readConstrutora(Integer id) {
-		return repository.findById(id).get();
+	public Optional<Construtora> readConstrutora(Integer id) {
+		return repository.findById(id);
 	}
 
 	@Transactional
@@ -41,14 +43,7 @@ public class ConstrutoraService {
 	}
 
 	@Transactional
-	public boolean deleteConstrutora(Integer id) {
-		Construtora construtora = repository.getReferenceById(id);
-
-		if (construtora != null) {
-			repository.deleteById(id);
-			return true;
-		}
-
-		return false;
+	public void deleteConstrutora(Integer id) {
+		this.repository.deleteById(id);
 	}
 }

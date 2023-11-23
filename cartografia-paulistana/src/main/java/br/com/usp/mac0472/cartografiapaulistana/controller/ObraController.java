@@ -1,8 +1,10 @@
 package br.com.usp.mac0472.cartografiapaulistana.controller;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,16 +27,16 @@ public class ObraController {
 	private ObraService service;
 
 	@GetMapping
-	public ResponseEntity<List<Obra>> getObras() {
-		List<Obra> obras = service.readObras();
+	public ResponseEntity<Page<Obra>> getObras(Pageable pageable) {
+		Page<Obra> obras = service.readObras(pageable);
 		return ResponseEntity.ok(obras);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Obra> getObra(@PathVariable Integer id) {
-		Obra obra = service.readObra(id);
-		if (obra != null) {
-			return ResponseEntity.ok(obra);
+		Optional<Obra> obra = service.readObra(id);
+		if (obra.isPresent()) {
+			return ResponseEntity.ok(obra.get());
 		}
 		return ResponseEntity.notFound().build();
 	}
@@ -56,10 +58,7 @@ public class ObraController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteObra(@PathVariable Integer id) {
-		boolean deleted = service.deleteObra(id);
-		if (deleted) {
-			return ResponseEntity.noContent().build();
-		}
-		return ResponseEntity.notFound().build();
+		service.deleteObra(id);
+		return ResponseEntity.noContent().build();
 	}
 }

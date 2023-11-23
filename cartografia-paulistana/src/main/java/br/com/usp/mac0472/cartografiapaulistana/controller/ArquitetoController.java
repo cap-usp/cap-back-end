@@ -1,8 +1,10 @@
 package br.com.usp.mac0472.cartografiapaulistana.controller;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,16 +27,16 @@ public class ArquitetoController {
 	private ArquitetoService service;
 
 	@GetMapping
-	public ResponseEntity<List<Arquiteto>> getArquitetos() {
-		List<Arquiteto> arquitetos = service.readArquitetos();
+	public ResponseEntity<Page<Arquiteto>> getArquitetos(Pageable pageable) {
+		Page<Arquiteto> arquitetos = service.readArquitetos(pageable);
 		return ResponseEntity.ok(arquitetos);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Arquiteto> getArquiteto(@PathVariable Integer id) {
-		Arquiteto arquiteto = service.readArquiteto(id);
-		if (arquiteto != null) {
-			return ResponseEntity.ok(arquiteto);
+		Optional<Arquiteto> arquiteto = service.readArquiteto(id);
+		if (arquiteto.isPresent()) {
+			return ResponseEntity.ok(arquiteto.get());
 		}
 		return ResponseEntity.notFound().build();
 	}
@@ -56,11 +58,8 @@ public class ArquitetoController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteArquiteto(@PathVariable Integer id) {
-		boolean deleted = service.deleteArquiteto(id);
-		if (deleted) {
-			return ResponseEntity.noContent().build();
-		}
-		return ResponseEntity.notFound().build();
+		service.deleteArquiteto(id);
+		return ResponseEntity.noContent().build();
 	}
 
 }

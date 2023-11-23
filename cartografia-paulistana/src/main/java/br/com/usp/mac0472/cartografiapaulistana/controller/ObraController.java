@@ -1,11 +1,13 @@
 package br.com.usp.mac0472.cartografiapaulistana.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.usp.mac0472.cartografiapaulistana.dto.CreateObraDto;
 import br.com.usp.mac0472.cartografiapaulistana.dto.ResponseObraDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.ResponsePageObraDto;
 import br.com.usp.mac0472.cartografiapaulistana.dto.UpdateObraDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
 import br.com.usp.mac0472.cartografiapaulistana.service.ObraService;
@@ -35,9 +38,13 @@ public class ObraController {
 	private ModelMapper mapper;
 
 	@GetMapping
-	public ResponseEntity<Page<Obra>> getObras(Pageable pageable) {
+	public ResponseEntity<Page<ResponsePageObraDto>> getObras(Pageable pageable) {
 		Page<Obra> obras = service.readObras(pageable);
-		return ResponseEntity.ok(obras);
+		List<ResponsePageObraDto> obrasDto = obras.stream().map(obra -> mapper.map(obra, ResponsePageObraDto.class))
+				.toList();
+		Page<ResponsePageObraDto> response = PageableExecutionUtils.getPage(obrasDto, pageable,
+				() -> obras.getTotalElements());
+		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping("/{id}")

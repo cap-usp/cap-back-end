@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.usp.mac0472.cartografiapaulistana.dto.CreateObraDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
 import br.com.usp.mac0472.cartografiapaulistana.service.ObraService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/obra")
@@ -42,8 +44,8 @@ public class ObraController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Obra> createObra(@RequestBody Obra obra) {
-		Obra obraCreated = service.createObra(obra);
+	public ResponseEntity<Obra> createObra(@RequestBody @Valid CreateObraDto obraDto) {
+		Obra obraCreated = service.createObra(obraDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(obraCreated);
 	}
 

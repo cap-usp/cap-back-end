@@ -1,6 +1,7 @@
 package br.com.usp.mac0472.cartografiapaulistana.model;
 
-import java.util.Objects;
+import static java.util.Objects.nonNull;
+
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -36,7 +37,7 @@ public class Construtora {
 	private Set<Obra> obras;
 
 	public void update(Construtora updatedConstrutora) {
-		if (Objects.nonNull(updatedConstrutora.nome)) {
+		if (nonNull(updatedConstrutora.nome)) {
 			this.nome = updatedConstrutora.nome;
 		}
 	}

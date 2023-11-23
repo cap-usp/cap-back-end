@@ -3,7 +3,6 @@ package br.com.usp.mac0472.cartografiapaulistana.model;
 import static java.util.Objects.nonNull;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -54,7 +53,7 @@ public class Arquiteto {
 		if (nonNull(updatedArquiteto.nomeMeio)) {
 			this.nomeMeio = updatedArquiteto.nomeMeio;
 		}
-		if (Objects.nonNull(updatedArquiteto.sobrenome)) {
+		if (nonNull(updatedArquiteto.sobrenome)) {
 			this.sobrenome = updatedArquiteto.sobrenome;
 		}
 	}

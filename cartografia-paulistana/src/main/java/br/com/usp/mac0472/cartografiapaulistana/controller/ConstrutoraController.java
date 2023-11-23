@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.usp.mac0472.cartografiapaulistana.dto.CreateConstrutoraDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Construtora;
 import br.com.usp.mac0472.cartografiapaulistana.service.ConstrutoraService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/construtora")
@@ -42,8 +44,8 @@ public class ConstrutoraController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Construtora> createConstrutora(@RequestBody Construtora construtora) {
-		Construtora construtoraCreated = service.createConstrutora(construtora);
+	public ResponseEntity<Construtora> createConstrutora(@RequestBody @Valid CreateConstrutoraDto construtoraDto) {
+		Construtora construtoraCreated = service.createConstrutora(construtoraDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(construtoraCreated);
 	}
 

@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.usp.mac0472.cartografiapaulistana.dto.CreateArquitetoDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Arquiteto;
 import br.com.usp.mac0472.cartografiapaulistana.service.ArquitetoService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/arquiteto")
@@ -42,8 +44,8 @@ public class ArquitetoController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Arquiteto> createArquiteto(@RequestBody Arquiteto arquiteto) {
-		Arquiteto arquitetoCreated = service.createArquiteto(arquiteto);
+	public ResponseEntity<Arquiteto> createArquiteto(@RequestBody @Valid CreateArquitetoDto arquitetoDto) {
+		Arquiteto arquitetoCreated = service.createArquiteto(arquitetoDto);
 		return ResponseEntity.status(HttpStatus.CREATED).body(arquitetoCreated);
 	}
 

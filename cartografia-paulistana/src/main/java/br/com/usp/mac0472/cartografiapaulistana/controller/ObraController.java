@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.usp.mac0472.cartografiapaulistana.dto.CreateObraDto;
 import br.com.usp.mac0472.cartografiapaulistana.dto.ResponseObraDto;
 import br.com.usp.mac0472.cartografiapaulistana.dto.ResponsePageObraDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.ResponsePageObraValidadaDto;
 import br.com.usp.mac0472.cartografiapaulistana.dto.UpdateObraDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
 import br.com.usp.mac0472.cartografiapaulistana.service.ObraService;
@@ -80,4 +82,16 @@ public class ObraController {
 		service.deleteObra(id);
 		return ResponseEntity.noContent().build();
 	}
+
+	@GetMapping("/buscarValidadasProfessora")
+	public ResponseEntity<Page<ResponsePageObraValidadaDto>> getValidadas(Pageable pageable,
+			@RequestParam Boolean validadoProfessora, @RequestParam Boolean validadoDPH) {
+		Page<Obra> obras = service.getValidadas(validadoProfessora, validadoDPH);
+		List<ResponsePageObraValidadaDto> obrasDto = obras.stream()
+				.map(obra -> mapper.map(obra, ResponsePageObraValidadaDto.class)).toList();
+		Page<ResponsePageObraValidadaDto> response = PageableExecutionUtils.getPage(obrasDto, pageable,
+				() -> obras.getTotalElements());
+		return ResponseEntity.ok(response);
+	}
+
 }

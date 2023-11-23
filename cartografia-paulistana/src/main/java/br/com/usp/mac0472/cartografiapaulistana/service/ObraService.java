@@ -41,6 +41,10 @@ public class ObraService {
 
 	@Transactional
 	public void deleteObra(Integer id) {
-		this.repository.deleteById(id);
+		repository.deleteById(id);
+	}
+
+	public Page<Obra> getValidadas(Boolean validadoProfessora, Boolean validadoDPH) {
+		return repository.findByValidadoProfessoraAndValidadoDPH(validadoProfessora, validadoDPH);
 	}
 }

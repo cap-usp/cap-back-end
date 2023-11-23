@@ -28,7 +28,7 @@ import br.com.usp.mac0472.cartografiapaulistana.service.ObraService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/obra")
+@RequestMapping("/api/obras")
 public class ObraController {
 
 	@Autowired

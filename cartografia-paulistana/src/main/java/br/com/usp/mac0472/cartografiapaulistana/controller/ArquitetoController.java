@@ -28,7 +28,7 @@ import br.com.usp.mac0472.cartografiapaulistana.service.ArquitetoService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/arquiteto")
+@RequestMapping("/api/arquitetos")
 public class ArquitetoController {
 
 	@Autowired

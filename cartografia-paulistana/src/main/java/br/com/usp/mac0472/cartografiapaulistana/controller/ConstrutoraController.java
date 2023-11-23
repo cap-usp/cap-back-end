@@ -28,7 +28,7 @@ import br.com.usp.mac0472.cartografiapaulistana.service.ConstrutoraService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/construtora")
+@RequestMapping("/api/construtoras")
 public class ConstrutoraController {
 
 	@Autowired

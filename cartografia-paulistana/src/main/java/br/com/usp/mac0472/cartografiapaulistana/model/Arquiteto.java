@@ -5,6 +5,7 @@ import static java.util.Objects.nonNull;
 import java.util.HashSet;
 import java.util.Set;
 
+import br.com.usp.mac0472.cartografiapaulistana.dto.UpdateArquitetoDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -46,15 +47,15 @@ public class Arquiteto {
 			@JoinColumn(name = "obra_id") })
 	private Set<Obra> obras = new HashSet<>();
 
-	public void update(Arquiteto updatedArquiteto) {
-		if (nonNull(updatedArquiteto.nome)) {
-			this.nome = updatedArquiteto.nome;
+	public void update(UpdateArquitetoDto updatedArquiteto) {
+		if (nonNull(updatedArquiteto.nome())) {
+			this.nome = updatedArquiteto.nome();
 		}
-		if (nonNull(updatedArquiteto.nomeMeio)) {
-			this.nomeMeio = updatedArquiteto.nomeMeio;
+		if (nonNull(updatedArquiteto.nomeMeio())) {
+			this.nomeMeio = updatedArquiteto.nomeMeio();
 		}
-		if (nonNull(updatedArquiteto.sobrenome)) {
-			this.sobrenome = updatedArquiteto.sobrenome;
+		if (nonNull(updatedArquiteto.sobrenome())) {
+			this.sobrenome = updatedArquiteto.sobrenome();
 		}
 	}
 }

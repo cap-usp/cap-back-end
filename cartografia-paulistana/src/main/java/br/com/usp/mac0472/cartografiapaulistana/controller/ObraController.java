@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.usp.mac0472.cartografiapaulistana.dto.CreateObraDto;
 import br.com.usp.mac0472.cartografiapaulistana.dto.ResponseObraDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.UpdateObraDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
 import br.com.usp.mac0472.cartografiapaulistana.service.ObraService;
 import jakarta.validation.Valid;
@@ -58,8 +59,8 @@ public class ObraController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<ResponseObraDto> updateObra(@PathVariable Integer id, @RequestBody Obra obra) {
-		Optional<Obra> updatedObra = service.updateObra(id, obra);
+	public ResponseEntity<ResponseObraDto> updateObra(@PathVariable Integer id, @RequestBody UpdateObraDto obraDto) {
+		Optional<Obra> updatedObra = service.updateObra(id, obraDto);
 		if (updatedObra.isPresent()) {
 			ResponseObraDto response = mapper.map(updatedObra.get(), ResponseObraDto.class);
 			return ResponseEntity.ok(response);

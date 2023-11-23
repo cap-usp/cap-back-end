@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.usp.mac0472.cartografiapaulistana.dto.CreateArquitetoDto;
 import br.com.usp.mac0472.cartografiapaulistana.dto.ResponseArquitetoDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.UpdateArquitetoDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Arquiteto;
 import br.com.usp.mac0472.cartografiapaulistana.service.ArquitetoService;
 import jakarta.validation.Valid;
@@ -59,8 +60,8 @@ public class ArquitetoController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<ResponseArquitetoDto> updateArquiteto(@PathVariable Integer id,
-			@RequestBody Arquiteto arquiteto) {
-		Optional<Arquiteto> updatedArquiteto = service.updateArquiteto(id, arquiteto);
+			@RequestBody UpdateArquitetoDto arquitetoDto) {
+		Optional<Arquiteto> updatedArquiteto = service.updateArquiteto(id, arquitetoDto);
 		if (updatedArquiteto.isPresent()) {
 			ResponseArquitetoDto response = mapper.map(updatedArquiteto.get(), ResponseArquitetoDto.class);
 			return ResponseEntity.ok(response);

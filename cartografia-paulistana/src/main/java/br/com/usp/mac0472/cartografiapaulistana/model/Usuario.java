@@ -1,12 +1,19 @@
 package br.com.usp.mac0472.cartografiapaulistana.model;
 
+import static br.com.usp.mac0472.cartografiapaulistana.enums.UsuarioRole.USER;
+import static jakarta.persistence.EnumType.STRING;
+
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import br.com.usp.mac0472.cartografiapaulistana.enums.UsuarioRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,6 +31,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Usuario implements UserDetails {
 
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -37,10 +46,22 @@ public class Usuario implements UserDetails {
 	@Column(name = "numero_usp", nullable = false, length = 11)
 	private String numeroUsp;
 
+	@Column(name = "role", nullable = false)
+	@Enumerated(STRING)
+	private UsuarioRole role;
+
+	public Usuario(String login, String senha) {
+		this.login = login;
+		this.senha = senha;
+		this.role = USER;
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
+		if (this.role == UsuarioRole.ADMIN) {
+			return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+		}
+		return List.of(new SimpleGrantedAuthority("ROLE_USER"));
 	}
 
 	@Override

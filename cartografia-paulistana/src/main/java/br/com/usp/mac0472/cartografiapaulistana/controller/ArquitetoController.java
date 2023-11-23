@@ -2,6 +2,7 @@ package br.com.usp.mac0472.cartografiapaulistana.controller;
 
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.usp.mac0472.cartografiapaulistana.dto.CreateArquitetoDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.ResponseArquitetoDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Arquiteto;
 import br.com.usp.mac0472.cartografiapaulistana.service.ArquitetoService;
 import jakarta.validation.Valid;
@@ -27,6 +29,9 @@ public class ArquitetoController {
 
 	@Autowired
 	private ArquitetoService service;
+
+	@Autowired
+	private ModelMapper mapper;
 
 	@GetMapping
 	public ResponseEntity<Page<Arquiteto>> getArquitetos(Pageable pageable) {
@@ -44,9 +49,11 @@ public class ArquitetoController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Arquiteto> createArquiteto(@RequestBody @Valid CreateArquitetoDto arquitetoDto) {
-		Arquiteto arquitetoCreated = service.createArquiteto(arquitetoDto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(arquitetoCreated);
+	public ResponseEntity<ResponseArquitetoDto> createArquiteto(@RequestBody @Valid CreateArquitetoDto arquitetoDto) {
+		Arquiteto arquiteto = mapper.map(arquitetoDto, Arquiteto.class);
+		service.createArquiteto(arquiteto);
+		ResponseArquitetoDto response = mapper.map(arquiteto, ResponseArquitetoDto.class);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	@PutMapping("/{id}")

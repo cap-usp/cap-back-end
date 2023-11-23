@@ -2,13 +2,11 @@ package br.com.usp.mac0472.cartografiapaulistana.service;
 
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.usp.mac0472.cartografiapaulistana.dto.CreateArquitetoDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Arquiteto;
 import br.com.usp.mac0472.cartografiapaulistana.repository.ArquitetoRepository;
 import jakarta.transaction.Transactional;
@@ -19,9 +17,6 @@ public class ArquitetoService {
 	@Autowired
 	private ArquitetoRepository repository;
 
-	@Autowired
-	private ModelMapper mapper;
-
 	public Page<Arquiteto> readArquitetos(Pageable pageable) {
 		return repository.findAll(pageable);
 	}
@@ -31,8 +26,7 @@ public class ArquitetoService {
 	}
 
 	@Transactional
-	public Arquiteto createArquiteto(CreateArquitetoDto arquitetoDto) {
-		Arquiteto arquiteto = mapper.map(arquitetoDto, Arquiteto.class);
+	public Arquiteto createArquiteto(Arquiteto arquiteto) {
 		return repository.save(arquiteto);
 	}
 

@@ -2,6 +2,7 @@ package br.com.usp.mac0472.cartografiapaulistana.controller;
 
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.usp.mac0472.cartografiapaulistana.dto.CreateObraDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.ResponseObraDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
 import br.com.usp.mac0472.cartografiapaulistana.service.ObraService;
 import jakarta.validation.Valid;
@@ -27,6 +29,9 @@ public class ObraController {
 
 	@Autowired
 	private ObraService service;
+
+	@Autowired
+	private ModelMapper mapper;
 
 	@GetMapping
 	public ResponseEntity<Page<Obra>> getObras(Pageable pageable) {
@@ -44,9 +49,11 @@ public class ObraController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Obra> createObra(@RequestBody @Valid CreateObraDto obraDto) {
-		Obra obraCreated = service.createObra(obraDto);
-		return ResponseEntity.status(HttpStatus.CREATED).body(obraCreated);
+	public ResponseEntity<ResponseObraDto> createObra(@RequestBody @Valid CreateObraDto obraDto) {
+		Obra obra = mapper.map(obraDto, Obra.class);
+		service.createObra(obra);
+		ResponseObraDto response = mapper.map(obra, ResponseObraDto.class);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	@PutMapping("/{id}")

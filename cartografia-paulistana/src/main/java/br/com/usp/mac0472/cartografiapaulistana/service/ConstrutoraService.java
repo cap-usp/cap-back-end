@@ -2,13 +2,11 @@ package br.com.usp.mac0472.cartografiapaulistana.service;
 
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.usp.mac0472.cartografiapaulistana.dto.CreateConstrutoraDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Construtora;
 import br.com.usp.mac0472.cartografiapaulistana.repository.ConstrutoraRepository;
 import jakarta.transaction.Transactional;
@@ -19,9 +17,6 @@ public class ConstrutoraService {
 	@Autowired
 	private ConstrutoraRepository repository;
 
-	@Autowired
-	private ModelMapper mapper;
-
 	public Page<Construtora> readConstrutoras(Pageable pageable) {
 		return repository.findAll(pageable);
 	}
@@ -31,8 +26,7 @@ public class ConstrutoraService {
 	}
 
 	@Transactional
-	public Construtora createConstrutora(CreateConstrutoraDto construtoraDto) {
-		Construtora construtora = mapper.map(construtoraDto, Construtora.class);
+	public Construtora createConstrutora(Construtora construtora) {
 		return repository.save(construtora);
 	}
 

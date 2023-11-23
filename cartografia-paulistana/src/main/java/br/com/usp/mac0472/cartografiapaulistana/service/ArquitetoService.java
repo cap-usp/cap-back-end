@@ -31,15 +31,11 @@ public class ArquitetoService {
 	}
 
 	@Transactional
-	public Arquiteto updateArquiteto(Integer id, Arquiteto updatedArquiteto) {
+	public Optional<Arquiteto> updateArquiteto(Integer id, Arquiteto updatedArquiteto) {
 		Arquiteto existingArquiteto = repository.getReferenceById(id);
-
-		if (existingArquiteto != null) {
-			existingArquiteto.update(updatedArquiteto);
-			return repository.save(existingArquiteto);
-		}
-
-		return null;
+		existingArquiteto.update(updatedArquiteto);
+		repository.save(existingArquiteto);
+		return Optional.ofNullable(existingArquiteto);
 	}
 
 	@Transactional

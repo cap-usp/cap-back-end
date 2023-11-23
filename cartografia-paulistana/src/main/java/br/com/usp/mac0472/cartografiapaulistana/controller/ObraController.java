@@ -40,10 +40,11 @@ public class ObraController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Obra> getObra(@PathVariable Integer id) {
+	public ResponseEntity<ResponseObraDto> getObra(@PathVariable Integer id) {
 		Optional<Obra> obra = service.readObra(id);
 		if (obra.isPresent()) {
-			return ResponseEntity.ok(obra.get());
+			ResponseObraDto response = mapper.map(obra.get(), ResponseObraDto.class);
+			return ResponseEntity.ok(response);
 		}
 		return ResponseEntity.notFound().build();
 	}
@@ -57,10 +58,11 @@ public class ObraController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Obra> updateObra(@PathVariable Integer id, @RequestBody Obra obra) {
-		Obra updatedObra = service.updateObra(id, obra);
-		if (updatedObra != null) {
-			return ResponseEntity.ok(updatedObra);
+	public ResponseEntity<ResponseObraDto> updateObra(@PathVariable Integer id, @RequestBody Obra obra) {
+		Optional<Obra> updatedObra = service.updateObra(id, obra);
+		if (updatedObra.isPresent()) {
+			ResponseObraDto response = mapper.map(updatedObra.get(), ResponseObraDto.class);
+			return ResponseEntity.ok(response);
 		}
 		return ResponseEntity.notFound().build();
 	}

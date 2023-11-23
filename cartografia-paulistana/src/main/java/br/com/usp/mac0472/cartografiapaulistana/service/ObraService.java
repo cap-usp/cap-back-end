@@ -31,15 +31,11 @@ public class ObraService {
 	}
 
 	@Transactional
-	public Obra updateObra(Integer id, Obra updatedObra) {
+	public Optional<Obra> updateObra(Integer id, Obra updatedObra) {
 		Obra existingObra = repository.getReferenceById(id);
-
-		if (existingObra != null) {
-			existingObra.update(updatedObra);
-			return repository.save(existingObra);
-		}
-
-		return null;
+		existingObra.update(updatedObra);
+		repository.save(existingObra);
+		return Optional.ofNullable(existingObra);
 	}
 
 	@Transactional

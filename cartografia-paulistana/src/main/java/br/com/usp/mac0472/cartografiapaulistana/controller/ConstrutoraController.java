@@ -40,10 +40,11 @@ public class ConstrutoraController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Construtora> getConstrutora(@PathVariable Integer id) {
+	public ResponseEntity<ResponseConstrutoraDto> getConstrutora(@PathVariable Integer id) {
 		Optional<Construtora> construtora = service.readConstrutora(id);
 		if (construtora.isPresent()) {
-			return ResponseEntity.ok(construtora.get());
+			ResponseConstrutoraDto response = mapper.map(construtora.get(), ResponseConstrutoraDto.class);
+			return ResponseEntity.ok(response);
 		}
 		return ResponseEntity.notFound().build();
 	}
@@ -58,11 +59,12 @@ public class ConstrutoraController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Construtora> updateConstrutora(@PathVariable Integer id,
+	public ResponseEntity<ResponseConstrutoraDto> updateConstrutora(@PathVariable Integer id,
 			@RequestBody Construtora construtora) {
-		Construtora updatedConstrutora = service.updateConstrutora(id, construtora);
-		if (updatedConstrutora != null) {
-			return ResponseEntity.ok(updatedConstrutora);
+		Optional<Construtora> updatedConstrutora = service.updateConstrutora(id, construtora);
+		if (updatedConstrutora.isPresent()) {
+			ResponseConstrutoraDto response = mapper.map(updatedConstrutora.get(), ResponseConstrutoraDto.class);
+			return ResponseEntity.ok(response);
 		}
 		return ResponseEntity.notFound().build();
 	}

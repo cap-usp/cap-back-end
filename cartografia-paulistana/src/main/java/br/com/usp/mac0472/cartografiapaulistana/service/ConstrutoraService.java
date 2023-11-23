@@ -31,15 +31,11 @@ public class ConstrutoraService {
 	}
 
 	@Transactional
-	public Construtora updateConstrutora(Integer id, Construtora updatedConstrutora) {
+	public Optional<Construtora> updateConstrutora(Integer id, Construtora updatedConstrutora) {
 		Construtora existingConstrutora = repository.getReferenceById(id);
-
-		if (existingConstrutora != null) {
-			existingConstrutora.update(updatedConstrutora);
-			return repository.save(existingConstrutora);
-		}
-
-		return null;
+		existingConstrutora.update(updatedConstrutora);
+		repository.save(existingConstrutora);
+		return Optional.ofNullable(existingConstrutora);
 	}
 
 	@Transactional

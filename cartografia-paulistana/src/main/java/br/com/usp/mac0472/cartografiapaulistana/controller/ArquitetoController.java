@@ -40,10 +40,11 @@ public class ArquitetoController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Arquiteto> getArquiteto(@PathVariable Integer id) {
+	public ResponseEntity<ResponseArquitetoDto> getArquiteto(@PathVariable Integer id) {
 		Optional<Arquiteto> arquiteto = service.readArquiteto(id);
 		if (arquiteto.isPresent()) {
-			return ResponseEntity.ok(arquiteto.get());
+			ResponseArquitetoDto response = mapper.map(arquiteto.get(), ResponseArquitetoDto.class);
+			return ResponseEntity.ok(response);
 		}
 		return ResponseEntity.notFound().build();
 	}
@@ -57,10 +58,12 @@ public class ArquitetoController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Arquiteto> updateArquiteto(@PathVariable Integer id, @RequestBody Arquiteto arquiteto) {
-		Arquiteto updatedArquiteto = service.updateArquiteto(id, arquiteto);
-		if (updatedArquiteto != null) {
-			return ResponseEntity.ok(updatedArquiteto);
+	public ResponseEntity<ResponseArquitetoDto> updateArquiteto(@PathVariable Integer id,
+			@RequestBody Arquiteto arquiteto) {
+		Optional<Arquiteto> updatedArquiteto = service.updateArquiteto(id, arquiteto);
+		if (updatedArquiteto.isPresent()) {
+			ResponseArquitetoDto response = mapper.map(updatedArquiteto.get(), ResponseArquitetoDto.class);
+			return ResponseEntity.ok(response);
 		}
 		return ResponseEntity.notFound().build();
 	}

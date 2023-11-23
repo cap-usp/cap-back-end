@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -78,8 +79,8 @@ public class Obra {
 	@Column(name = "ano_reforma")
 	private Integer anoReforma;
 
-	@Column(name = "referencias")
-	private String referencias;
+	@OneToMany(mappedBy = "obra", cascade = CascadeType.ALL)
+	private Set<Referencia> referencias;
 
 	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "endereco_id")

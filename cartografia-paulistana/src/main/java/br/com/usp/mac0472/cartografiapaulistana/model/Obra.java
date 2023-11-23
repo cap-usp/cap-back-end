@@ -79,6 +79,12 @@ public class Obra {
 	@Column(name = "ano_reforma")
 	private Integer anoReforma;
 
+	@Column(name = "validado_professora")
+	private Boolean validadoProfessora;
+
+	@Column(name = "validado_dph")
+	private Boolean validadoDPH;
+
 	@OneToMany(mappedBy = "obra", cascade = CascadeType.ALL)
 	private Set<Referencia> referencias;
 

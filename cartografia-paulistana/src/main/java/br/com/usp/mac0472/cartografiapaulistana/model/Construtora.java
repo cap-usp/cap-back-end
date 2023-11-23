@@ -1,12 +1,17 @@
 package br.com.usp.mac0472.cartografiapaulistana.model;
 
-import java.util.Objects;
+import static java.util.Objects.nonNull;
 
+import java.util.Set;
+
+import br.com.usp.mac0472.cartografiapaulistana.dto.UpdateConstrutoraDto;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,9 +33,13 @@ public class Construtora {
 	@Column(name = "nome")
 	private String nome;
 
-	public void update(Construtora updatedConstrutora) {
-		if (Objects.nonNull(updatedConstrutora.nome)) {
-			this.nome = updatedConstrutora.nome;
+	@OneToMany(mappedBy = "construtora", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH })
+	private Set<Obra> obras;
+
+	public void update(UpdateConstrutoraDto updatedConstrutora) {
+		if (nonNull(updatedConstrutora.nome())) {
+			this.nome = updatedConstrutora.nome();
 		}
 	}
 

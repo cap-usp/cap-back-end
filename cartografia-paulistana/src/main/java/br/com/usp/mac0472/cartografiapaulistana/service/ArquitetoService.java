@@ -1,10 +1,13 @@
 package br.com.usp.mac0472.cartografiapaulistana.service;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import br.com.usp.mac0472.cartografiapaulistana.dto.UpdateArquitetoDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Arquiteto;
 import br.com.usp.mac0472.cartografiapaulistana.repository.ArquitetoRepository;
 import jakarta.transaction.Transactional;
@@ -15,12 +18,12 @@ public class ArquitetoService {
 	@Autowired
 	private ArquitetoRepository repository;
 
-	public List<Arquiteto> readArquitetos() {
-		return repository.findAll();
+	public Page<Arquiteto> readArquitetos(Pageable pageable) {
+		return repository.findAll(pageable);
 	}
 
-	public Arquiteto readArquiteto(Integer id) {
-		return repository.findById(id).get();
+	public Optional<Arquiteto> readArquiteto(Integer id) {
+		return repository.findById(id);
 	}
 
 	@Transactional
@@ -29,27 +32,15 @@ public class ArquitetoService {
 	}
 
 	@Transactional
-	public Arquiteto updateArquiteto(Integer id, Arquiteto updatedArquiteto) {
+	public Optional<Arquiteto> updateArquiteto(Integer id, UpdateArquitetoDto updatedArquiteto) {
 		Arquiteto existingArquiteto = repository.getReferenceById(id);
-
-		if (existingArquiteto != null) {
-			existingArquiteto.update(updatedArquiteto);
-			return repository.save(existingArquiteto);
-		}
-
-		return null;
+		existingArquiteto.update(updatedArquiteto);
+		repository.save(existingArquiteto);
+		return Optional.ofNullable(existingArquiteto);
 	}
 
 	@Transactional
-	public boolean deleteArquiteto(Integer id) {
-		Arquiteto arquiteto = repository.getReferenceById(id);
-
-		if (arquiteto != null) {
-			repository.deleteById(id);
-			return true;
-		}
-
-		return false;
+	public void deleteArquiteto(Integer id) {
+		this.repository.deleteById(id);
 	}
-
 }

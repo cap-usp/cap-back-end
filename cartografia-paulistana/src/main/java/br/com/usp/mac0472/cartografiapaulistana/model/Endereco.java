@@ -1,10 +1,14 @@
 package br.com.usp.mac0472.cartografiapaulistana.model;
 
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -49,5 +53,9 @@ public class Endereco {
 
 	@Column(name = "pais")
 	private String pais;
+
+	@OneToMany(mappedBy = "endereco", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH })
+	private Set<Obra> obras;
 
 }

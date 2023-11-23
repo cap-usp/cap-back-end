@@ -1,53 +1,46 @@
 package br.com.usp.mac0472.cartografiapaulistana.service;
 
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import br.com.usp.mac0472.cartografiapaulistana.dto.UpdateObraDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
 import br.com.usp.mac0472.cartografiapaulistana.repository.ObraRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ObraService {
 
-    @Autowired
-    private ObraRepository repository;
+	@Autowired
+	private ObraRepository repository;
 
-    public List<Obra> readObras() {
-        return repository.findAll();
-    }
+	public Page<Obra> readObras(Pageable pageable) {
+		return repository.findAll(pageable);
+	}
 
-    public Obra readObra(Integer id) {
-        return repository.getReferenceById(id);
-    }
+	public Optional<Obra> readObra(Integer id) {
+		return repository.findById(id);
+	}
 
-    @Transactional
-    public Obra createObra(Obra obra) {
-        return repository.save(obra);
-    }
+	@Transactional
+	public Obra createObra(Obra obra) {
+		return repository.save(obra);
+	}
 
-    @Transactional
-    public Obra updateObra(Integer id, Obra updatedObra) {
-        Obra existingObra = repository.getReferenceById(id);
+	@Transactional
+	public Optional<Obra> updateObra(Integer id, UpdateObraDto updatedObra) {
+		Obra existingObra = repository.getReferenceById(id);
+		existingObra.update(updatedObra);
+		repository.save(existingObra);
+		return Optional.ofNullable(existingObra);
+	}
 
-        if (existingObra != null) {
-            existingObra.update(updatedObra);
-            return repository.save(existingObra);
-        }
-
-        return null;
-    }
-    @Transactional
-    public boolean deleteObra(Integer id) {
-        Obra obra = repository.getReferenceById(id);
-
-        if (obra != null) {
-            repository.deleteById(id);
-            return true;
-        }
-
-        return false;
-    }
+	@Transactional
+	public void deleteObra(Integer id) {
+		this.repository.deleteById(id);
+	}
 }

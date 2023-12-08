@@ -1,9 +1,9 @@
-package br.com.usp.mac0472.cartografiapaulistana.dto;
+package br.com.usp.mac0472.cartografiapaulistana.dto.obra;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record CreateObraDto(
+public record ObraCreateDto(
 		@NotNull Double latitude, 
 		@NotNull Double longitude, 
 		@NotBlank String nomeOficial, 

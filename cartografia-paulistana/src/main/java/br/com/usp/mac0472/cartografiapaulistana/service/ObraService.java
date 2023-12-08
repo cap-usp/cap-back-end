@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.usp.mac0472.cartografiapaulistana.dto.UpdateObraDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraUpdateDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
 import br.com.usp.mac0472.cartografiapaulistana.repository.ObraRepository;
 import jakarta.transaction.Transactional;
@@ -32,7 +32,7 @@ public class ObraService {
 	}
 
 	@Transactional
-	public Optional<Obra> updateObra(Integer id, UpdateObraDto updatedObra) {
+	public Optional<Obra> updateObra(Integer id, ObraUpdateDto updatedObra) {
 		Obra existingObra = repository.getReferenceById(id);
 		existingObra.update(updatedObra);
 		repository.save(existingObra);

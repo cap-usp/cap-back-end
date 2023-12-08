@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.com.usp.mac0472.cartografiapaulistana.dto.UpdateConstrutoraDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.construtora.ConstrutoraUpdateDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Construtora;
 import br.com.usp.mac0472.cartografiapaulistana.repository.ConstrutoraRepository;
 import jakarta.transaction.Transactional;
@@ -32,7 +32,7 @@ public class ConstrutoraService {
 	}
 
 	@Transactional
-	public Optional<Construtora> updateConstrutora(Integer id, UpdateConstrutoraDto updatedConstrutora) {
+	public Optional<Construtora> updateConstrutora(Integer id, ConstrutoraUpdateDto updatedConstrutora) {
 		Construtora existingConstrutora = repository.getReferenceById(id);
 		existingConstrutora.update(updatedConstrutora);
 		repository.save(existingConstrutora);

@@ -20,11 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.usp.mac0472.cartografiapaulistana.dto.CreateObraDto;
-import br.com.usp.mac0472.cartografiapaulistana.dto.ResponseObraDto;
-import br.com.usp.mac0472.cartografiapaulistana.dto.ResponsePageObraDto;
-import br.com.usp.mac0472.cartografiapaulistana.dto.ResponsePageObraValidadaDto;
-import br.com.usp.mac0472.cartografiapaulistana.dto.UpdateObraDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraCreateDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraPageResponseDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraResponseDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraUpdateDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraValidadaPageResponseDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
 import br.com.usp.mac0472.cartografiapaulistana.service.ObraService;
 import jakarta.validation.Valid;
@@ -40,38 +40,38 @@ public class ObraController {
 	private ModelMapper mapper;
 
 	@GetMapping
-	public ResponseEntity<Page<ResponsePageObraDto>> getObras(Pageable pageable) {
+	public ResponseEntity<Page<ObraPageResponseDto>> getObras(Pageable pageable) {
 		Page<Obra> obras = service.readObras(pageable);
-		List<ResponsePageObraDto> obrasDto = obras.stream().map(obra -> mapper.map(obra, ResponsePageObraDto.class))
+		List<ObraPageResponseDto> obrasDto = obras.stream().map(obra -> mapper.map(obra, ObraPageResponseDto.class))
 				.toList();
-		Page<ResponsePageObraDto> response = PageableExecutionUtils.getPage(obrasDto, pageable,
+		Page<ObraPageResponseDto> response = PageableExecutionUtils.getPage(obrasDto, pageable,
 				() -> obras.getTotalElements());
 		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<ResponseObraDto> getObra(@PathVariable Integer id) {
+	public ResponseEntity<ObraResponseDto> getObra(@PathVariable Integer id) {
 		Optional<Obra> obra = service.readObra(id);
 		if (obra.isPresent()) {
-			ResponseObraDto response = mapper.map(obra.get(), ResponseObraDto.class);
+			ObraResponseDto response = mapper.map(obra.get(), ObraResponseDto.class);
 			return ResponseEntity.ok(response);
 		}
 		return ResponseEntity.notFound().build();
 	}
 
 	@PostMapping
-	public ResponseEntity<ResponseObraDto> createObra(@RequestBody @Valid CreateObraDto obraDto) {
+	public ResponseEntity<ObraResponseDto> createObra(@RequestBody @Valid ObraCreateDto obraDto) {
 		Obra obra = mapper.map(obraDto, Obra.class);
 		service.createObra(obra);
-		ResponseObraDto response = mapper.map(obra, ResponseObraDto.class);
+		ObraResponseDto response = mapper.map(obra, ObraResponseDto.class);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<ResponseObraDto> updateObra(@PathVariable Integer id, @RequestBody UpdateObraDto obraDto) {
+	public ResponseEntity<ObraResponseDto> updateObra(@PathVariable Integer id, @RequestBody ObraUpdateDto obraDto) {
 		Optional<Obra> updatedObra = service.updateObra(id, obraDto);
 		if (updatedObra.isPresent()) {
-			ResponseObraDto response = mapper.map(updatedObra.get(), ResponseObraDto.class);
+			ObraResponseDto response = mapper.map(updatedObra.get(), ObraResponseDto.class);
 			return ResponseEntity.ok(response);
 		}
 		return ResponseEntity.notFound().build();
@@ -84,12 +84,12 @@ public class ObraController {
 	}
 
 	@GetMapping("/buscarValidadasProfessora")
-	public ResponseEntity<Page<ResponsePageObraValidadaDto>> getValidadas(Pageable pageable,
+	public ResponseEntity<Page<ObraValidadaPageResponseDto>> getValidadas(Pageable pageable,
 			@RequestParam Boolean validadoProfessora, @RequestParam Boolean validadoDPH) {
 		Page<Obra> obras = service.getValidadas(validadoProfessora, validadoDPH);
-		List<ResponsePageObraValidadaDto> obrasDto = obras.stream()
-				.map(obra -> mapper.map(obra, ResponsePageObraValidadaDto.class)).toList();
-		Page<ResponsePageObraValidadaDto> response = PageableExecutionUtils.getPage(obrasDto, pageable,
+		List<ObraValidadaPageResponseDto> obrasDto = obras.stream()
+				.map(obra -> mapper.map(obra, ObraValidadaPageResponseDto.class)).toList();
+		Page<ObraValidadaPageResponseDto> response = PageableExecutionUtils.getPage(obrasDto, pageable,
 				() -> obras.getTotalElements());
 		return ResponseEntity.ok(response);
 	}

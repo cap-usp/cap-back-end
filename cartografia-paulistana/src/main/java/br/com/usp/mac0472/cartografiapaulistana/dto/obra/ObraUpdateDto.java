@@ -1,6 +1,6 @@
-package br.com.usp.mac0472.cartografiapaulistana.dto;
+package br.com.usp.mac0472.cartografiapaulistana.dto.obra;
 
-public record UpdateObraDto(
+public record ObraUpdateDto(
 		Double latitude, 
 		Double longitude, 
 		String nomeOficial, 

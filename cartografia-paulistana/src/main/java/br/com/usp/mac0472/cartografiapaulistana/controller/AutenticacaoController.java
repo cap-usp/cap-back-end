@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.usp.mac0472.cartografiapaulistana.dto.CadastroDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.usuario.UserCreateDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.usuario.UserLoginDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Usuario;
 import br.com.usp.mac0472.cartografiapaulistana.repository.UserRepository;
 import br.com.usp.mac0472.cartografiapaulistana.service.TokenService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("api/auth")
@@ -31,7 +33,7 @@ public class AutenticacaoController {
 	private AuthenticationManager authenticationManager;
 
 	@PostMapping("login")
-	public ResponseEntity<String> login(@RequestBody CadastroDto data) {
+	public ResponseEntity<String> login(@RequestBody UserLoginDto data) {
 		var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.senha());
 		var auth = this.authenticationManager.authenticate(usernamePassword);
 
@@ -41,7 +43,7 @@ public class AutenticacaoController {
 	}
 
 	@PostMapping("cadastro")
-	public ResponseEntity<?> cadastrar(@RequestBody CadastroDto data) {
+	public ResponseEntity<?> cadastrar(@RequestBody @Valid UserCreateDto data) {
 		if (Objects.nonNull(this.repository.findByLogin(data.login()))) {
 			return ResponseEntity.badRequest().build();
 		}

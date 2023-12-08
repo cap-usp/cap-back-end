@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.usp.mac0472.cartografiapaulistana.dto.CreateConstrutoraDto;
-import br.com.usp.mac0472.cartografiapaulistana.dto.ResponseConstrutoraDto;
-import br.com.usp.mac0472.cartografiapaulistana.dto.ResponsePageConstrutoraDto;
-import br.com.usp.mac0472.cartografiapaulistana.dto.UpdateConstrutoraDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.construtora.ConstrutoraCreateDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.construtora.ConstrutoraPageResponseDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.construtora.ConstrutoraResponseDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.construtora.ConstrutoraUpdateDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Construtora;
 import br.com.usp.mac0472.cartografiapaulistana.service.ConstrutoraService;
 import jakarta.validation.Valid;
@@ -38,40 +38,40 @@ public class ConstrutoraController {
 	private ModelMapper mapper;
 
 	@GetMapping
-	public ResponseEntity<Page<ResponsePageConstrutoraDto>> getConstrutoras(Pageable pageable) {
+	public ResponseEntity<Page<ConstrutoraPageResponseDto>> getConstrutoras(Pageable pageable) {
 		Page<Construtora> construtoras = service.readConstrutoras(pageable);
-		List<ResponsePageConstrutoraDto> construtorasDto = construtoras.stream()
-				.map(construtora -> mapper.map(construtora, ResponsePageConstrutoraDto.class)).toList();
-		Page<ResponsePageConstrutoraDto> response = PageableExecutionUtils.getPage(construtorasDto, pageable,
+		List<ConstrutoraPageResponseDto> construtorasDto = construtoras.stream()
+				.map(construtora -> mapper.map(construtora, ConstrutoraPageResponseDto.class)).toList();
+		Page<ConstrutoraPageResponseDto> response = PageableExecutionUtils.getPage(construtorasDto, pageable,
 				() -> construtoras.getTotalElements());
 		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<ResponseConstrutoraDto> getConstrutora(@PathVariable Integer id) {
+	public ResponseEntity<ConstrutoraResponseDto> getConstrutora(@PathVariable Integer id) {
 		Optional<Construtora> construtora = service.readConstrutora(id);
 		if (construtora.isPresent()) {
-			ResponseConstrutoraDto response = mapper.map(construtora.get(), ResponseConstrutoraDto.class);
+			ConstrutoraResponseDto response = mapper.map(construtora.get(), ConstrutoraResponseDto.class);
 			return ResponseEntity.ok(response);
 		}
 		return ResponseEntity.notFound().build();
 	}
 
 	@PostMapping
-	public ResponseEntity<ResponseConstrutoraDto> createConstrutora(
-			@RequestBody @Valid CreateConstrutoraDto construtoraDto) {
+	public ResponseEntity<ConstrutoraResponseDto> createConstrutora(
+			@RequestBody @Valid ConstrutoraCreateDto construtoraDto) {
 		Construtora construtora = mapper.map(construtoraDto, Construtora.class);
 		service.createConstrutora(construtora);
-		ResponseConstrutoraDto response = mapper.map(construtora, ResponseConstrutoraDto.class);
+		ConstrutoraResponseDto response = mapper.map(construtora, ConstrutoraResponseDto.class);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<ResponseConstrutoraDto> updateConstrutora(@PathVariable Integer id,
-			@RequestBody UpdateConstrutoraDto construtoraDto) {
+	public ResponseEntity<ConstrutoraResponseDto> updateConstrutora(@PathVariable Integer id,
+			@RequestBody ConstrutoraUpdateDto construtoraDto) {
 		Optional<Construtora> updatedConstrutora = service.updateConstrutora(id, construtoraDto);
 		if (updatedConstrutora.isPresent()) {
-			ResponseConstrutoraDto response = mapper.map(updatedConstrutora.get(), ResponseConstrutoraDto.class);
+			ConstrutoraResponseDto response = mapper.map(updatedConstrutora.get(), ConstrutoraResponseDto.class);
 			return ResponseEntity.ok(response);
 		}
 		return ResponseEntity.notFound().build();

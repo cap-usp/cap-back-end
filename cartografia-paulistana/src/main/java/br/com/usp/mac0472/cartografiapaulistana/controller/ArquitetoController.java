@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.usp.mac0472.cartografiapaulistana.dto.CreateArquitetoDto;
-import br.com.usp.mac0472.cartografiapaulistana.dto.ResponseArquitetoDto;
-import br.com.usp.mac0472.cartografiapaulistana.dto.ResponsePageArquitetoDto;
-import br.com.usp.mac0472.cartografiapaulistana.dto.UpdateArquitetoDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.arquiteto.ArquitetoCreateDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.arquiteto.ArquitetoPageResponseDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.arquiteto.ArquitetoResponseDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.arquiteto.ArquitetoUpdateDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Arquiteto;
 import br.com.usp.mac0472.cartografiapaulistana.service.ArquitetoService;
 import jakarta.validation.Valid;
@@ -38,39 +38,39 @@ public class ArquitetoController {
 	private ModelMapper mapper;
 
 	@GetMapping
-	public ResponseEntity<Page<ResponsePageArquitetoDto>> getArquitetos(Pageable pageable) {
+	public ResponseEntity<Page<ArquitetoPageResponseDto>> getArquitetos(Pageable pageable) {
 		Page<Arquiteto> arquitetos = service.readArquitetos(pageable);
-		List<ResponsePageArquitetoDto> arquitetosDto = arquitetos.stream()
-				.map(arquiteto -> mapper.map(arquiteto, ResponsePageArquitetoDto.class)).toList();
-		Page<ResponsePageArquitetoDto> response = PageableExecutionUtils.getPage(arquitetosDto, pageable,
+		List<ArquitetoPageResponseDto> arquitetosDto = arquitetos.stream()
+				.map(arquiteto -> mapper.map(arquiteto, ArquitetoPageResponseDto.class)).toList();
+		Page<ArquitetoPageResponseDto> response = PageableExecutionUtils.getPage(arquitetosDto, pageable,
 				() -> arquitetos.getTotalElements());
 		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<ResponseArquitetoDto> getArquiteto(@PathVariable Integer id) {
+	public ResponseEntity<ArquitetoResponseDto> getArquiteto(@PathVariable Integer id) {
 		Optional<Arquiteto> arquiteto = service.readArquiteto(id);
 		if (arquiteto.isPresent()) {
-			ResponseArquitetoDto response = mapper.map(arquiteto.get(), ResponseArquitetoDto.class);
+			ArquitetoResponseDto response = mapper.map(arquiteto.get(), ArquitetoResponseDto.class);
 			return ResponseEntity.ok(response);
 		}
 		return ResponseEntity.notFound().build();
 	}
 
 	@PostMapping
-	public ResponseEntity<ResponseArquitetoDto> createArquiteto(@RequestBody @Valid CreateArquitetoDto arquitetoDto) {
+	public ResponseEntity<ArquitetoResponseDto> createArquiteto(@RequestBody @Valid ArquitetoCreateDto arquitetoDto) {
 		Arquiteto arquiteto = mapper.map(arquitetoDto, Arquiteto.class);
 		service.createArquiteto(arquiteto);
-		ResponseArquitetoDto response = mapper.map(arquiteto, ResponseArquitetoDto.class);
+		ArquitetoResponseDto response = mapper.map(arquiteto, ArquitetoResponseDto.class);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<ResponseArquitetoDto> updateArquiteto(@PathVariable Integer id,
-			@RequestBody UpdateArquitetoDto arquitetoDto) {
+	public ResponseEntity<ArquitetoResponseDto> updateArquiteto(@PathVariable Integer id,
+			@RequestBody ArquitetoUpdateDto arquitetoDto) {
 		Optional<Arquiteto> updatedArquiteto = service.updateArquiteto(id, arquitetoDto);
 		if (updatedArquiteto.isPresent()) {
-			ResponseArquitetoDto response = mapper.map(updatedArquiteto.get(), ResponseArquitetoDto.class);
+			ArquitetoResponseDto response = mapper.map(updatedArquiteto.get(), ArquitetoResponseDto.class);
 			return ResponseEntity.ok(response);
 		}
 		return ResponseEntity.notFound().build();

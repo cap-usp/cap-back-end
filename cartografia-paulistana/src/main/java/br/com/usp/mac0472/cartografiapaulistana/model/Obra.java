@@ -5,7 +5,7 @@ import static java.util.Objects.nonNull;
 import java.util.HashSet;
 import java.util.Set;
 
-import br.com.usp.mac0472.cartografiapaulistana.dto.UpdateObraDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraUpdateDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -102,7 +102,7 @@ public class Obra {
 			@JoinColumn(name = "arquiteto_id") })
 	private Set<Arquiteto> arquitetos = new HashSet<>();
 
-	public void update(UpdateObraDto updatedObra) {
+	public void update(ObraUpdateDto updatedObra) {
 		if (nonNull(updatedObra.latitude())) {
 			this.latitude = updatedObra.latitude();
 		}

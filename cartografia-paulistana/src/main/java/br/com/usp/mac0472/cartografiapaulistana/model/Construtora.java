@@ -4,7 +4,7 @@ import static java.util.Objects.nonNull;
 
 import java.util.Set;
 
-import br.com.usp.mac0472.cartografiapaulistana.dto.UpdateConstrutoraDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.construtora.ConstrutoraUpdateDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,7 +37,7 @@ public class Construtora {
 			CascadeType.REFRESH })
 	private Set<Obra> obras;
 
-	public void update(UpdateConstrutoraDto updatedConstrutora) {
+	public void update(ConstrutoraUpdateDto updatedConstrutora) {
 		if (nonNull(updatedConstrutora.nome())) {
 			this.nome = updatedConstrutora.nome();
 		}

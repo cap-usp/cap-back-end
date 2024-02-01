@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class ObraPageResponseDto {
 
+	private Integer id;
 	private String nomeOficial;
 	private Integer anoProjeto; 
 	private Integer anoConstrucao;

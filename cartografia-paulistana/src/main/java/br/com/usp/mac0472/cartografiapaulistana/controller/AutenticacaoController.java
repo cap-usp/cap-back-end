@@ -20,7 +20,7 @@ import br.com.usp.mac0472.cartografiapaulistana.service.TokenService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("api/auth")
+@RequestMapping("/api/auth")
 public class AutenticacaoController {
 
 	@Autowired
@@ -32,7 +32,7 @@ public class AutenticacaoController {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
-	@PostMapping("login")
+	@PostMapping("/login")
 	public ResponseEntity<String> login(@RequestBody UserLoginDto data) {
 		var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.senha());
 		var auth = this.authenticationManager.authenticate(usernamePassword);
@@ -42,7 +42,7 @@ public class AutenticacaoController {
 		return ResponseEntity.ok(token);
 	}
 
-	@PostMapping("cadastro")
+	@PostMapping("/cadastro")
 	public ResponseEntity<?> cadastrar(@RequestBody @Valid UserCreateDto data) {
 		if (Objects.nonNull(this.repository.findByLogin(data.login()))) {
 			return ResponseEntity.badRequest().build();

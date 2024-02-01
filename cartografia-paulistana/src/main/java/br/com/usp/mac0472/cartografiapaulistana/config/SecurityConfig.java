@@ -30,10 +30,10 @@ public class SecurityConfig {
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/error").permitAll()
 						.requestMatchers(POST, "api/auth/login").permitAll()
-						.requestMatchers(GET, "api/arquiteto/**").permitAll()
-						.requestMatchers(GET, "api/obra/**").permitAll()
-						.requestMatchers(GET, "api/construtora/**").permitAll()
-						.requestMatchers(POST, "api/auth/cadastrar").hasRole("ADMIN")
+						.requestMatchers(GET, "api/arquitetos/**").permitAll()
+						.requestMatchers(GET, "api/obras/**").permitAll()
+						.requestMatchers(GET, "api/construtoras/**").permitAll()
+						.requestMatchers(POST, "api/auth/cadastro").hasRole("ADMIN")
 						.anyRequest().authenticated())
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();

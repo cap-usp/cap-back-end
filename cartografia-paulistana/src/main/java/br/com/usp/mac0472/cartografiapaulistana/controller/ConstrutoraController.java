@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.usp.mac0472.cartografiapaulistana.dto.construtora.ConstrutoraCreateDto;
-import br.com.usp.mac0472.cartografiapaulistana.dto.construtora.ConstrutoraPageResponseDto;
 import br.com.usp.mac0472.cartografiapaulistana.dto.construtora.ConstrutoraResponseDto;
 import br.com.usp.mac0472.cartografiapaulistana.dto.construtora.ConstrutoraUpdateDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Construtora;
@@ -38,11 +37,11 @@ public class ConstrutoraController {
 	private ModelMapper mapper;
 
 	@GetMapping
-	public ResponseEntity<Page<ConstrutoraPageResponseDto>> getConstrutoras(Pageable pageable) {
+	public ResponseEntity<Page<ConstrutoraResponseDto>> getConstrutoras(Pageable pageable) {
 		Page<Construtora> construtoras = service.readConstrutoras(pageable);
-		List<ConstrutoraPageResponseDto> construtorasDto = construtoras.stream()
-				.map(construtora -> mapper.map(construtora, ConstrutoraPageResponseDto.class)).toList();
-		Page<ConstrutoraPageResponseDto> response = PageableExecutionUtils.getPage(construtorasDto, pageable,
+		List<ConstrutoraResponseDto> construtorasDto = construtoras.stream()
+				.map(construtora -> mapper.map(construtora, ConstrutoraResponseDto.class)).toList();
+		Page<ConstrutoraResponseDto> response = PageableExecutionUtils.getPage(construtorasDto, pageable,
 				() -> construtoras.getTotalElements());
 		return ResponseEntity.ok(response);
 	}

@@ -86,7 +86,7 @@ public class ObraController {
 	@GetMapping("/buscarValidadasProfessora")
 	public ResponseEntity<Page<ObraValidadaPageResponseDto>> getValidadas(Pageable pageable,
 			@RequestParam Boolean validadoProfessora, @RequestParam Boolean validadoDPH) {
-		Page<Obra> obras = service.getValidadas(validadoProfessora, validadoDPH);
+		Page<Obra> obras = service.getValidadas(validadoProfessora, validadoDPH, pageable);
 		List<ObraValidadaPageResponseDto> obrasDto = obras.stream()
 				.map(obra -> mapper.map(obra, ObraValidadaPageResponseDto.class)).toList();
 		Page<ObraValidadaPageResponseDto> response = PageableExecutionUtils.getPage(obrasDto, pageable,

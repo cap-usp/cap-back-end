@@ -44,7 +44,7 @@ public class ObraService {
 		repository.deleteById(id);
 	}
 
-	public Page<Obra> getValidadas(Boolean validadoProfessora, Boolean validadoDPH) {
-		return repository.findByValidadoProfessoraAndValidadoDPH(validadoProfessora, validadoDPH);
+	public Page<Obra> getValidadas(Boolean validadoProfessora, Boolean validadoDPH, Pageable pageable) {
+		return repository.findByValidadoProfessoraAndValidadoDPH(validadoProfessora, validadoDPH, pageable);
 	}
 }

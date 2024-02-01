@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.usp.mac0472.cartografiapaulistana.dto.arquiteto.ArquitetoCreateDto;
-import br.com.usp.mac0472.cartografiapaulistana.dto.arquiteto.ArquitetoPageResponseDto;
 import br.com.usp.mac0472.cartografiapaulistana.dto.arquiteto.ArquitetoResponseDto;
 import br.com.usp.mac0472.cartografiapaulistana.dto.arquiteto.ArquitetoUpdateDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Arquiteto;
@@ -38,11 +37,11 @@ public class ArquitetoController {
 	private ModelMapper mapper;
 
 	@GetMapping
-	public ResponseEntity<Page<ArquitetoPageResponseDto>> getArquitetos(Pageable pageable) {
+	public ResponseEntity<Page<ArquitetoResponseDto>> getArquitetos(Pageable pageable) {
 		Page<Arquiteto> arquitetos = service.readArquitetos(pageable);
-		List<ArquitetoPageResponseDto> arquitetosDto = arquitetos.stream()
-				.map(arquiteto -> mapper.map(arquiteto, ArquitetoPageResponseDto.class)).toList();
-		Page<ArquitetoPageResponseDto> response = PageableExecutionUtils.getPage(arquitetosDto, pageable,
+		List<ArquitetoResponseDto> arquitetosDto = arquitetos.stream()
+				.map(arquiteto -> mapper.map(arquiteto, ArquitetoResponseDto.class)).toList();
+		Page<ArquitetoResponseDto> response = PageableExecutionUtils.getPage(arquitetosDto, pageable,
 				() -> arquitetos.getTotalElements());
 		return ResponseEntity.ok(response);
 	}

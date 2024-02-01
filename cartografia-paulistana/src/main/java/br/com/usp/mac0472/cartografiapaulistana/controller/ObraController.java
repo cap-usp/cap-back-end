@@ -62,7 +62,7 @@ public class ObraController {
 	@PostMapping
 	public ResponseEntity<ObraResponseDto> createObra(@RequestBody @Valid ObraCreateDto obraDto) {
 		Obra obra = mapper.map(obraDto, Obra.class);
-		service.createObra(obra);
+		service.createObra(obra, obraDto.construtoraId());
 		ObraResponseDto response = mapper.map(obra, ObraResponseDto.class);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}

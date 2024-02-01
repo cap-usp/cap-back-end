@@ -19,9 +19,7 @@ public record ObraCreateDto(
 		String condicao,
 		Integer anoDemolicao,
 		Integer anoReforma,
-		Boolean validadoProfessora,
-		Boolean validadoDPH,
-		@NotNull Integer construtora_id
+		@NotNull Integer construtoraId
 		) {
 
 }

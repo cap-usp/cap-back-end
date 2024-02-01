@@ -1,5 +1,6 @@
 package br.com.usp.mac0472.cartografiapaulistana.service;
 
+import java.security.InvalidParameterException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraUpdateDto;
+import br.com.usp.mac0472.cartografiapaulistana.model.Construtora;
 import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
 import br.com.usp.mac0472.cartografiapaulistana.repository.ObraRepository;
 import jakarta.transaction.Transactional;
@@ -17,6 +19,9 @@ public class ObraService {
 
 	@Autowired
 	private ObraRepository repository;
+	
+	@Autowired
+	private ConstrutoraService construtoraService;
 
 	public Page<Obra> readObras(Pageable pageable) {
 		return repository.findAll(pageable);
@@ -27,7 +32,9 @@ public class ObraService {
 	}
 
 	@Transactional
-	public Obra createObra(Obra obra) {
+	public Obra createObra(Obra obra, Integer construtoraId) {
+		Construtora construtora = construtoraService.readConstrutora(construtoraId).orElseThrow(() -> new InvalidParameterException());
+		obra.setConstrutora(construtora);
 		return repository.save(obra);
 	}
 

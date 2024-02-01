@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import br.com.usp.mac0472.cartografiapaulistana.dto.usuario.UserCreateDto;
 import br.com.usp.mac0472.cartografiapaulistana.enums.UsuarioRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,19 +41,24 @@ public class Usuario implements UserDetails {
 	@Column(name = "login", nullable = false, length = 25)
 	private String login;
 
-	@Column(name = "senha", nullable = false, length = 25)
+	@Column(name = "senha", nullable = false, length = 200)
 	private String senha;
 
 	@Column(name = "numero_usp", nullable = false, length = 11)
 	private String numeroUsp;
+	
+	@Column(name = "email", nullable = false, length = 45)
+	private String email;
 
 	@Column(name = "role", nullable = false)
 	@Enumerated(STRING)
 	private UsuarioRole role;
 
-	public Usuario(String login, String senha) {
-		this.login = login;
+	public Usuario(UserCreateDto data, String senha) {
+		this.login = data.login();
 		this.senha = senha;
+		this.numeroUsp = data.numeroUsp();
+		this.email = data.email();
 		this.role = USER;
 	}
 

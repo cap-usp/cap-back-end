@@ -1,12 +1,14 @@
 package br.com.usp.mac0472.cartografiapaulistana.model;
 
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,46 +16,46 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "ENDERECO")
+@Table(name = "endereco")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EnderecoObra {
+public class Endereco {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@ManyToOne
-	@JoinColumn(name = "obra_id", nullable = false)
-	private Obra obra;
-
-	@Column(name = "cep", nullable = false, length = 8)
+	@Column(name = "cep")
 	private String cep;
 
-	@Column(name = "logradouro", nullable = false, length = 100)
+	@Column(name = "logradouro")
 	private String logradouro;
 
-	@Column(name = "numero", nullable = false)
+	@Column(name = "numero")
 	private Integer numero;
 
-	@Column(name = "complemento", length = 50)
+	@Column(name = "complemento")
 	private String complemento;
 
-	@Column(name = "bairro", nullable = false, length = 50)
+	@Column(name = "bairro")
 	private String bairro;
 
-	@Column(name = "distrito", nullable = false, length = 50)
+	@Column(name = "distrito")
 	private String distrito;
 
-	@Column(name = "municipio", nullable = false, length = 50)
+	@Column(name = "municipio")
 	private String municipio;
 
-	@Column(name = "estado", nullable = false, length = 50)
+	@Column(name = "estado")
 	private String estado;
 
-	@Column(name = "pais", nullable = false, length = 50)
+	@Column(name = "pais")
 	private String pais;
+
+	@OneToMany(mappedBy = "endereco", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+			CascadeType.REFRESH })
+	private Set<Obra> obras;
 
 }

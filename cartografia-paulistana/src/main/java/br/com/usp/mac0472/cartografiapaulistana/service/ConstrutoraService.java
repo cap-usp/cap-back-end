@@ -1,10 +1,13 @@
 package br.com.usp.mac0472.cartografiapaulistana.service;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import br.com.usp.mac0472.cartografiapaulistana.dto.construtora.ConstrutoraUpdateDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Construtora;
 import br.com.usp.mac0472.cartografiapaulistana.repository.ConstrutoraRepository;
 import jakarta.transaction.Transactional;
@@ -15,12 +18,12 @@ public class ConstrutoraService {
 	@Autowired
 	private ConstrutoraRepository repository;
 
-	public List<Construtora> readConstrutoras() {
-		return repository.findAll();
+	public Page<Construtora> readConstrutoras(Pageable pageable) {
+		return repository.findAll(pageable);
 	}
 
-	public Construtora readConstrutora(Integer id) {
-		return repository.findById(id).get();
+	public Optional<Construtora> readConstrutora(Integer id) {
+		return repository.findById(id);
 	}
 
 	@Transactional
@@ -29,26 +32,15 @@ public class ConstrutoraService {
 	}
 
 	@Transactional
-	public Construtora updateConstrutora(Integer id, Construtora updatedConstrutora) {
+	public Optional<Construtora> updateConstrutora(Integer id, ConstrutoraUpdateDto updatedConstrutora) {
 		Construtora existingConstrutora = repository.getReferenceById(id);
-
-		if (existingConstrutora != null) {
-			existingConstrutora.update(updatedConstrutora);
-			return repository.save(existingConstrutora);
-		}
-
-		return null;
+		existingConstrutora.update(updatedConstrutora);
+		repository.save(existingConstrutora);
+		return Optional.ofNullable(existingConstrutora);
 	}
 
 	@Transactional
-	public boolean deleteConstrutora(Integer id) {
-		Construtora construtora = repository.getReferenceById(id);
-
-		if (construtora != null) {
-			repository.deleteById(id);
-			return true;
-		}
-
-		return false;
+	public void deleteConstrutora(Integer id) {
+		this.repository.deleteById(id);
 	}
 }

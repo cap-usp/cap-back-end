@@ -1,5 +1,7 @@
 package br.com.usp.mac0472.cartografiapaulistana.model;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,23 +15,22 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "ARQUITETO_OBRA")
+@Table(name = "referencia")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ArquitetoObra {
+public class Referencia {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@ManyToOne
-	@JoinColumn(name = "arquiteto_id", nullable = false)
-	private Arquiteto arquiteto;
+	@Column(name = "url")
+	private String url;
 
-	@ManyToOne
-	@JoinColumn(name = "obra_id", nullable = false)
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "obra_id")
 	private Obra obra;
 
 }

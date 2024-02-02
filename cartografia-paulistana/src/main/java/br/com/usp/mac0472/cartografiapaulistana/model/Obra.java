@@ -1,12 +1,22 @@
 package br.com.usp.mac0472.cartografiapaulistana.model;
 
+import static java.util.Objects.nonNull;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraUpdateDto;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +24,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "OBRA")
+@Table(name = "obra")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,17 +35,13 @@ public class Obra {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "latitude", nullable = false)
+	@Column(name = "latitude")
 	private Double latitude;
 
-	@Column(name = "longitude", nullable = false)
+	@Column(name = "longitude")
 	private Double longitude;
 
-	@ManyToOne
-	@JoinColumn(name = "construtora_id", nullable = false)
-	private Construtora construtora;
-
-	@Column(name = "nome_oficial", nullable = false, length = 80)
+	@Column(name = "nome_oficial")
 	private String nomeOficial;
 
 	@Column(name = "ano_projeto")
@@ -53,19 +59,19 @@ public class Obra {
 	@Column(name = "iphan")
 	private Integer iphan;
 
-	@Column(name = "uso_original", nullable = false, length = 30)
+	@Column(name = "uso_original")
 	private String usoOriginal;
 
-	@Column(name = "codigo_original", nullable = false, length = 30)
+	@Column(name = "codigo_original")
 	private String codigoOriginal;
 
-	@Column(name = "uso_atual", length = 30)
+	@Column(name = "uso_atual")
 	private String usoAtual;
 
-	@Column(name = "codigo_atual", length = 30)
+	@Column(name = "codigo_atual")
 	private String codigoAtual;
 
-	@Column(name = "condicao", length = 30)
+	@Column(name = "condicao")
 	private String condicao;
 
 	@Column(name = "ano_demolicao")
@@ -74,62 +80,74 @@ public class Obra {
 	@Column(name = "ano_reforma")
 	private Integer anoReforma;
 
-	@Column(name = "referencias", nullable = false, length = 1024)
-	private String referencias;
+	@Column(name = "validado_professora")
+	private Boolean validadoProfessora;
 
-	public void update(Obra updatedObra) {
-		if (updatedObra.latitude != null) {
-			this.latitude = updatedObra.latitude;
-		}
-		if (updatedObra.longitude != null) {
-			this.longitude = updatedObra.longitude;
-		}
-		if (updatedObra.construtora != null) {
-			this.construtora = updatedObra.construtora;
-		}
-		if (updatedObra.nomeOficial != null) {
-			this.nomeOficial = updatedObra.nomeOficial;
-		}
-		if (updatedObra.anoProjeto != null) {
-			this.anoProjeto = updatedObra.anoProjeto;
-		}
-		if (updatedObra.anoConstrucao != null) {
-			this.anoConstrucao = updatedObra.anoConstrucao;
-		}
-		if (updatedObra.condephaat != null) {
-			this.condephaat = updatedObra.condephaat;
-		}
-		if (updatedObra.conpresp != null) {
-			this.conpresp = updatedObra.conpresp;
-		}
-		if (updatedObra.iphan != null) {
-			this.iphan = updatedObra.iphan;
-		}
-		if (updatedObra.usoOriginal != null) {
-			this.usoOriginal = updatedObra.usoOriginal;
-		}
-		if (updatedObra.codigoOriginal != null) {
-			this.codigoOriginal = updatedObra.codigoOriginal;
-		}
-		if (updatedObra.usoAtual != null) {
-			this.usoAtual = updatedObra.usoAtual;
-		}
-		if (updatedObra.codigoAtual != null) {
-			this.codigoAtual = updatedObra.codigoAtual;
-		}
-		if (updatedObra.condicao != null) {
-			this.condicao = updatedObra.condicao;
-		}
-		if (updatedObra.anoDemolicao != null) {
-			this.anoDemolicao = updatedObra.anoDemolicao;
-		}
-		if (updatedObra.anoReforma != null) {
-			this.anoReforma = updatedObra.anoReforma;
-		}
-		if (updatedObra.referencias != null) {
-			this.referencias = updatedObra.referencias;
-		}
+	@Column(name = "validado_dph")
+	private Boolean validadoDPH;
 
+	@OneToMany(mappedBy = "obra", cascade = CascadeType.ALL)
+	private Set<Referencia> referencias;
+
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "endereco_id")
+	private Endereco endereco;
+
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "construtora_id")
+	private Construtora construtora;
+
+	@ManyToMany(cascade = { CascadeType.ALL })
+	@JoinTable(name = "arquiteto_obra", joinColumns = { @JoinColumn(name = "obra_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "arquiteto_id") })
+	private Set<Arquiteto> arquitetos = new HashSet<>();
+
+	public void update(ObraUpdateDto updatedObra) {
+		if (nonNull(updatedObra.latitude())) {
+			this.latitude = updatedObra.latitude();
+		}
+		if (nonNull(updatedObra.longitude())) {
+			this.longitude = updatedObra.longitude();
+		}
+		if (nonNull(updatedObra.nomeOficial())) {
+			this.nomeOficial = updatedObra.nomeOficial();
+		}
+		if (nonNull(updatedObra.anoProjeto())) {
+			this.anoProjeto = updatedObra.anoProjeto();
+		}
+		if (nonNull(updatedObra.anoConstrucao())) {
+			this.anoConstrucao = updatedObra.anoConstrucao();
+		}
+		if (nonNull(updatedObra.condephaat())) {
+			this.condephaat = updatedObra.condephaat();
+		}
+		if (nonNull(updatedObra.conpresp())) {
+			this.conpresp = updatedObra.conpresp();
+		}
+		if (nonNull(updatedObra.iphan())) {
+			this.iphan = updatedObra.iphan();
+		}
+		if (nonNull(updatedObra.usoOriginal())) {
+			this.usoOriginal = updatedObra.usoOriginal();
+		}
+		if (nonNull(updatedObra.codigoOriginal())) {
+			this.codigoOriginal = updatedObra.codigoOriginal();
+		}
+		if (nonNull(updatedObra.usoAtual())) {
+			this.usoAtual = updatedObra.usoAtual();
+		}
+		if (nonNull(updatedObra.codigoAtual())) {
+			this.codigoAtual = updatedObra.codigoAtual();
+		}
+		if (nonNull(updatedObra.condicao())) {
+			this.condicao = updatedObra.condicao();
+		}
+		if (nonNull(updatedObra.anoDemolicao())) {
+			this.anoDemolicao = updatedObra.anoDemolicao();
+		}
+		if (nonNull(updatedObra.anoReforma())) {
+			this.anoReforma = updatedObra.anoReforma();
+		}
 	}
 
 }

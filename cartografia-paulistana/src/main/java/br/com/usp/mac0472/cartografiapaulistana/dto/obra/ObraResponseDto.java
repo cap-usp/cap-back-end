@@ -11,8 +11,17 @@ public class ObraResponseDto {
 	private String nomeOficial; 
 	private Integer anoProjeto;
 	private Integer anoConstrucao; 
+	private Integer condephaat;
+	private Integer conpresp;
+	private Integer iphan;
+	private String usoOriginal;
+	private String codigoOriginal;
 	private String usoAtual;
+	private String codigoAtual;
 	private String condicao;
+	private Integer anoDemolicao;
 	private Integer anoReforma;
+	private Boolean validadoProfessora;
+	private Boolean validadoDPH;
 	
 }

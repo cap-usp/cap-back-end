@@ -6,7 +6,8 @@ import jakarta.validation.constraints.NotNull;
 public record ObraCreateDto(
 		@NotNull Double latitude, 
 		@NotNull Double longitude, 
-		@NotBlank String nomeOficial, 
+		@NotBlank String nomeOficial,
+		@NotNull Integer arquitetoId,
 		Integer anoProjeto,
 		Integer anoConstrucao, 
 		Integer condephaat, 

@@ -1,6 +1,5 @@
 package br.com.usp.mac0472.cartografiapaulistana.service;
 
-import java.security.InvalidParameterException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraUpdateDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Construtora;
 import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
 import br.com.usp.mac0472.cartografiapaulistana.repository.ObraRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -33,8 +33,10 @@ public class ObraService {
 
 	@Transactional
 	public Obra createObra(Obra obra, Integer construtoraId) {
-		Construtora construtora = construtoraService.readConstrutora(construtoraId).orElseThrow(() -> new InvalidParameterException());
+		Construtora construtora = construtoraService.readConstrutora(construtoraId).orElseThrow(() -> new EntityNotFoundException());
 		obra.setConstrutora(construtora);
+		obra.setValidadoDPH(false);
+		obra.setValidadoProfessora(false);
 		return repository.save(obra);
 	}
 
@@ -51,7 +53,23 @@ public class ObraService {
 		repository.deleteById(id);
 	}
 
-	public Page<Obra> getValidadas(Boolean validadoProfessora, Boolean validadoDPH, Pageable pageable) {
-		return repository.findByValidadoProfessoraAndValidadoDPH(validadoProfessora, validadoDPH, pageable);
+	public Page<Obra> getValidadas(Pageable pageable) {
+		return repository.findObrasValidadas(pageable);
+	}
+	
+	@Transactional
+	public Obra validacaoProfessora(Integer id) {
+		Obra existingObra = repository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+		existingObra.setValidadoProfessora(!existingObra.getValidadoProfessora());
+		repository.save(existingObra);
+		return existingObra;
+	}
+	
+	@Transactional
+	public Obra validacaoDPH(Integer id) {
+		Obra existingObra = repository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+		existingObra.setValidadoDPH(!existingObra.getValidadoDPH());
+		repository.save(existingObra);
+		return existingObra;
 	}
 }

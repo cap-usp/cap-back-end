@@ -17,14 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraCreateDto;
 import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraPageResponseDto;
 import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraResponseDto;
 import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraUpdateDto;
-import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraValidadaPageResponseDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
 import br.com.usp.mac0472.cartografiapaulistana.service.ObraService;
 import jakarta.validation.Valid;
@@ -82,15 +80,18 @@ public class ObraController {
 		service.deleteObra(id);
 		return ResponseEntity.noContent().build();
 	}
-
-	@GetMapping("/buscarValidadasProfessora")
-	public ResponseEntity<Page<ObraValidadaPageResponseDto>> getValidadas(Pageable pageable,
-			@RequestParam Boolean validadoProfessora, @RequestParam Boolean validadoDPH) {
-		Page<Obra> obras = service.getValidadas(validadoProfessora, validadoDPH, pageable);
-		List<ObraValidadaPageResponseDto> obrasDto = obras.stream()
-				.map(obra -> mapper.map(obra, ObraValidadaPageResponseDto.class)).toList();
-		Page<ObraValidadaPageResponseDto> response = PageableExecutionUtils.getPage(obrasDto, pageable,
-				() -> obras.getTotalElements());
+	
+	@PutMapping("/validacaoProfessora/{id}")
+	public ResponseEntity<ObraResponseDto> validacaoProfessora(@PathVariable Integer id){
+		Obra obra = service.validacaoProfessora(id);
+		ObraResponseDto response = mapper.map(obra, ObraResponseDto.class);
+		return ResponseEntity.ok(response);
+	}
+	
+	@PutMapping("/validacaoDPH/{id}")
+	public ResponseEntity<ObraResponseDto> validacaoDPH(@PathVariable Integer id){
+		Obra obra = service.validacaoDPH(id);
+		ObraResponseDto response = mapper.map(obra, ObraResponseDto.class);
 		return ResponseEntity.ok(response);
 	}
 

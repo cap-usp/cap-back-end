@@ -9,5 +9,7 @@ public class ObraPageResponseDto {
 	private String nomeOficial;
 	private Integer anoProjeto; 
 	private Integer anoConstrucao;
+	private Boolean validadoProfessora;
+	private Boolean validadoDPH;
 	
 }

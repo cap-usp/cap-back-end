@@ -1,6 +1,5 @@
 package br.com.usp.mac0472.cartografiapaulistana.model;
 
-import static br.com.usp.mac0472.cartografiapaulistana.enums.UsuarioRole.USER;
 import static jakarta.persistence.EnumType.STRING;
 
 import java.util.Collection;
@@ -59,7 +58,7 @@ public class Usuario implements UserDetails {
 		this.senha = senha;
 		this.numeroUsp = data.numeroUsp();
 		this.email = data.email();
-		this.role = USER;
+		this.role = UsuarioRole.valueOf(data.autorizacao().toUpperCase());
 	}
 
 	@Override

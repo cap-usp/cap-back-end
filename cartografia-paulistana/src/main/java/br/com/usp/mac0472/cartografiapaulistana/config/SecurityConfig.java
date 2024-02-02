@@ -1,12 +1,15 @@
 package br.com.usp.mac0472.cartografiapaulistana.config;
 
+import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,10 +32,16 @@ public class SecurityConfig {
 				.sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/error").permitAll()
-						.requestMatchers(POST, "api/auth/login").permitAll()
 						.requestMatchers(GET, "api/arquitetos/**").permitAll()
+						.requestMatchers(PUT, "api/arquitetos/**").hasRole("ADMIN")
+						.requestMatchers(DELETE, "api/arquitetos/**").hasRole("ADMIN")
 						.requestMatchers(GET, "api/obras/**").permitAll()
+						.requestMatchers(PUT, "api/obras/**").hasRole("ADMIN")
+						.requestMatchers(DELETE, "api/obras/**").hasRole("ADMIN")
 						.requestMatchers(GET, "api/construtoras/**").permitAll()
+						.requestMatchers(PUT, "api/construtoras/**").hasRole("ADMIN")
+						.requestMatchers(DELETE, "api/construtoras/**").hasRole("ADMIN")
+						.requestMatchers(POST, "api/auth/login").permitAll()
 						.requestMatchers(POST, "api/auth/cadastro").hasRole("ADMIN")
 						.anyRequest().authenticated())
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

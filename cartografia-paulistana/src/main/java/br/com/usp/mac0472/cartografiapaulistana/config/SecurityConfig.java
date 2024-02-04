@@ -44,6 +44,7 @@ public class SecurityConfig {
 						.requestMatchers(POST, "api/auth/login").permitAll()
 						.requestMatchers(POST, "api/auth/cadastro").hasRole("ADMIN")
 						.requestMatchers(GET, "api/publica/**").permitAll()
+						.requestMatchers("api/usuarios/**").hasRole("ADMIN")
 						.anyRequest().authenticated())
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();

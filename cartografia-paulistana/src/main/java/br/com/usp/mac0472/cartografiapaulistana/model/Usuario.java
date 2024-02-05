@@ -68,13 +68,13 @@ public class Usuario implements UserDetails {
 			this.login = updatedUsuario.login();
 		}
 		if(StringUtils.isNotBlank(updatedUsuario.senha())){
-			this.login = updatedUsuario.senha();
+			this.senha = updatedUsuario.senha();
 		}
 		if(StringUtils.isNotBlank(updatedUsuario.numeroUsp())){
-			this.login = updatedUsuario.numeroUsp();
+			this.numeroUsp = updatedUsuario.numeroUsp();
 		}
 		if(StringUtils.isNotBlank(updatedUsuario.email())){
-			this.login = updatedUsuario.email();
+			this.email = updatedUsuario.email();
 		}
 	}
 

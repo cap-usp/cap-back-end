@@ -10,7 +10,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.usp.mac0472.cartografiapaulistana.dto.usuario.UserCreateDto;
+import br.com.usp.mac0472.cartografiapaulistana.dto.usuario.UsuarioUpdateDto;
 import br.com.usp.mac0472.cartografiapaulistana.enums.UsuarioRole;
+import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
@@ -59,6 +61,21 @@ public class Usuario implements UserDetails {
 		this.numeroUsp = data.numeroUsp();
 		this.email = data.email();
 		this.role = UsuarioRole.valueOf(data.autorizacao().toUpperCase());
+	}
+	
+	public void update(UsuarioUpdateDto updatedUsuario) {
+		if(StringUtils.isNotBlank(updatedUsuario.login())){
+			this.login = updatedUsuario.login();
+		}
+		if(StringUtils.isNotBlank(updatedUsuario.senha())){
+			this.senha = updatedUsuario.senha();
+		}
+		if(StringUtils.isNotBlank(updatedUsuario.numeroUsp())){
+			this.numeroUsp = updatedUsuario.numeroUsp();
+		}
+		if(StringUtils.isNotBlank(updatedUsuario.email())){
+			this.email = updatedUsuario.email();
+		}
 	}
 
 	@Override

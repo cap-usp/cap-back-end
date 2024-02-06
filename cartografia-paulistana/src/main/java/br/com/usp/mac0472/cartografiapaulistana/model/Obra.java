@@ -1,14 +1,17 @@
 package br.com.usp.mac0472.cartografiapaulistana.model;
 
+import static jakarta.persistence.EnumType.STRING;
 import static java.util.Objects.nonNull;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraUpdateDto;
+import br.com.usp.mac0472.cartografiapaulistana.enums.ObraStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -72,8 +75,24 @@ public class Obra {
 	private String codigoAtual;
 
 	@Column(name = "status")
-	private String status;
+	@Enumerated(STRING)
+	private ObraStatus status;
 
+	@Column(name = "escritorio")
+	private String escritorio;
+	
+	@Column(name = "nome_alternativo")
+	private String nomeAlternativo;
+	
+	@Column(name = "data_uso_atual")
+	private Integer dataUsoAtual;
+	
+	@Column(name = "ano_demolicao")
+	private Integer anoDemolicao;
+
+	@Column(name = "ano_restauro")
+	private Integer anoRestauro;
+	
 	@Column(name = "validado_professora")
 	private Boolean validadoProfessora;
 
@@ -134,7 +153,7 @@ public class Obra {
 			this.codigoAtual = updatedObra.codigoAtual();
 		}
 		if (nonNull(updatedObra.status())) {
-			this.status = updatedObra.status();
+			this.status = ObraStatus.valueOf(updatedObra.status());
 		}
 	}
 

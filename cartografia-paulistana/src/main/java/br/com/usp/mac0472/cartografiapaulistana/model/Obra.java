@@ -36,10 +36,10 @@ public class Obra {
 	private Integer id;
 
 	@Column(name = "latitude")
-	private Double latitude;
+	private String latitude;
 
 	@Column(name = "longitude")
-	private Double longitude;
+	private String longitude;
 
 	@Column(name = "nome_oficial")
 	private String nomeOficial;
@@ -71,14 +71,8 @@ public class Obra {
 	@Column(name = "codigo_atual")
 	private String codigoAtual;
 
-	@Column(name = "condicao")
-	private String condicao;
-
-	@Column(name = "ano_demolicao")
-	private Integer anoDemolicao;
-
-	@Column(name = "ano_reforma")
-	private Integer anoReforma;
+	@Column(name = "status")
+	private String status;
 
 	@Column(name = "validado_professora")
 	private Boolean validadoProfessora;
@@ -139,14 +133,8 @@ public class Obra {
 		if (nonNull(updatedObra.codigoAtual())) {
 			this.codigoAtual = updatedObra.codigoAtual();
 		}
-		if (nonNull(updatedObra.condicao())) {
-			this.condicao = updatedObra.condicao();
-		}
-		if (nonNull(updatedObra.anoDemolicao())) {
-			this.anoDemolicao = updatedObra.anoDemolicao();
-		}
-		if (nonNull(updatedObra.anoReforma())) {
-			this.anoReforma = updatedObra.anoReforma();
+		if (nonNull(updatedObra.status())) {
+			this.status = updatedObra.status();
 		}
 	}
 

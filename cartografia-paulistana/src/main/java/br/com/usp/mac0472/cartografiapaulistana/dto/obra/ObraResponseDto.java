@@ -6,8 +6,8 @@ import lombok.Data;
 public class ObraResponseDto {
 
 	private Integer id;
-	private Double latitude;
-	private Double longitude;
+	private String latitude;
+	private String longitude;
 	private String nomeOficial; 
 	private Integer anoProjeto;
 	private Integer anoConstrucao; 
@@ -18,9 +18,7 @@ public class ObraResponseDto {
 	private String codigoOriginal;
 	private String usoAtual;
 	private String codigoAtual;
-	private String condicao;
-	private Integer anoDemolicao;
-	private Integer anoReforma;
+	private String status;
 	private Boolean validadoProfessora;
 	private Boolean validadoDPH;
 	

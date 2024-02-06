@@ -27,32 +27,23 @@ public class Endereco {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "cep")
-	private String cep;
-
 	@Column(name = "logradouro")
 	private String logradouro;
 
 	@Column(name = "numero")
 	private Integer numero;
 
-	@Column(name = "complemento")
-	private String complemento;
-
-	@Column(name = "bairro")
-	private String bairro;
-
 	@Column(name = "distrito")
 	private String distrito;
 
 	@Column(name = "municipio")
 	private String municipio;
-
-	@Column(name = "estado")
-	private String estado;
-
-	@Column(name = "pais")
-	private String pais;
+	
+	@Column(name = "endereco_tipo")
+	private String enderecoTipo;
+	
+	@Column(name = "endereco_titulo")
+	private String enderecoTitulo;
 
 	@OneToMany(mappedBy = "endereco", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
 			CascadeType.REFRESH })

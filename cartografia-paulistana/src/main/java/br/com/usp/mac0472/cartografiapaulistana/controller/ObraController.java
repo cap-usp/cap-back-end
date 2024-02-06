@@ -1,5 +1,6 @@
 package br.com.usp.mac0472.cartografiapaulistana.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,8 +25,12 @@ import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraCreateDto;
 import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraPageResponseDto;
 import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraResponseDto;
 import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraUpdateDto;
+import br.com.usp.mac0472.cartografiapaulistana.enums.EnderecoTipo;
+import br.com.usp.mac0472.cartografiapaulistana.enums.EnderecoTitulo;
+import br.com.usp.mac0472.cartografiapaulistana.enums.ObraStatus;
 import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
 import br.com.usp.mac0472.cartografiapaulistana.service.ObraService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 
 @RestController
@@ -95,6 +100,28 @@ public class ObraController {
 		Obra obra = service.validacaoDPH(id);
 		ObraResponseDto response = mapper.map(obra, ObraResponseDto.class);
 		return ResponseEntity.ok(response);
+	}
+	
+	@GetMapping("/enums/{enumTipo}")
+	public ResponseEntity<List<String>> getOpcoesEnum(@PathVariable String enumTipo){
+		List<String> opcoes;
+		
+		switch(enumTipo) {
+			case "obraStatus":
+				opcoes = Arrays.asList(ObraStatus.values()).stream().map(value -> value.toString()).toList();
+				break;
+			case "enderecoTipo":
+				opcoes = Arrays.asList(EnderecoTipo.values()).stream().map(value -> value.toString()).toList();
+				break;
+			case "enderecoTitulo":
+				opcoes = Arrays.asList(EnderecoTitulo.values()).stream().map(value -> value.toString()).toList();
+				break;
+			default:
+				throw new EntityNotFoundException("Valor informado não pôde ser mapeado.");
+		}
+		
+		return ResponseEntity.ok(opcoes);
+		
 	}
 
 }

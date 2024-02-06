@@ -63,12 +63,12 @@ public class Usuario implements UserDetails {
 		this.role = UsuarioRole.valueOf(data.autorizacao().toUpperCase());
 	}
 	
-	public void update(UsuarioUpdateDto updatedUsuario) {
+	public void update(UsuarioUpdateDto updatedUsuario, String senhaEncriptada) {
 		if(StringUtils.isNotBlank(updatedUsuario.login())){
 			this.login = updatedUsuario.login();
 		}
 		if(StringUtils.isNotBlank(updatedUsuario.senha())){
-			this.senha = updatedUsuario.senha();
+			this.senha = senhaEncriptada;
 		}
 		if(StringUtils.isNotBlank(updatedUsuario.numeroUsp())){
 			this.numeroUsp = updatedUsuario.numeroUsp();

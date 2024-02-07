@@ -31,8 +31,6 @@ public class ObraService {
 	private ArquitetoService arquitetoService;
 
 	public Page<Obra> readObras(Pageable pageable, Boolean validadasProfessora, Boolean validadasDph) {
-		validadasProfessora = validadasProfessora ? validadasProfessora : false;
-		validadasDph = validadasDph ? validadasDph : false;
 		return repository.findObras(pageable, validadasProfessora, validadasDph);
 	}
 
@@ -43,7 +41,7 @@ public class ObraService {
 	@Transactional
 	public Obra createObra(Obra obra, List<Integer> arquitetosId, Integer construtoraId, Endereco endereco) {
 		Construtora construtora = construtoraService.readConstrutora(construtoraId)
-				.orElseThrow(() -> new EntityNotFoundException());
+				.orElseThrow(() -> new EntityNotFoundException("Construtora não encontrada."));
 		Set<Arquiteto> arquitetos = Set.copyOf(arquitetosId.stream().map(autoriaId -> {
 			return arquitetoService.readArquiteto(autoriaId).orElseThrow(() -> new EntityNotFoundException("Arquiteto não encontrado."));
 		}).toList());

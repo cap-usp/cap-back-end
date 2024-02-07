@@ -28,10 +28,12 @@ import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraUpdateDto;
 import br.com.usp.mac0472.cartografiapaulistana.enums.EnderecoTipo;
 import br.com.usp.mac0472.cartografiapaulistana.enums.EnderecoTitulo;
 import br.com.usp.mac0472.cartografiapaulistana.enums.ObraStatus;
+import br.com.usp.mac0472.cartografiapaulistana.model.Endereco;
 import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
 import br.com.usp.mac0472.cartografiapaulistana.service.ObraService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/api/obras")
@@ -45,8 +47,11 @@ public class ObraController {
 	private ModelMapper mapper;
 
 	@GetMapping
-	public ResponseEntity<Page<ObraPageResponseDto>> getObras(Pageable pageable) {
-		Page<Obra> obras = service.readObras(pageable);
+	public ResponseEntity<Page<ObraPageResponseDto>> getObras(
+			@PathParam(value = "validadasProfessora") Boolean validadasProfessora, 
+			@PathParam(value = "validadasDph") Boolean validadasDph,
+			Pageable pageable) {
+		Page<Obra> obras = service.readObras(pageable, validadasProfessora, validadasDph);
 		List<ObraPageResponseDto> obrasDto = obras.stream().map(obra -> mapper.map(obra, ObraPageResponseDto.class))
 				.toList();
 		Page<ObraPageResponseDto> response = PageableExecutionUtils.getPage(obrasDto, pageable,
@@ -67,7 +72,8 @@ public class ObraController {
 	@PostMapping
 	public ResponseEntity<ObraResponseDto> createObra(@RequestBody @Valid ObraCreateDto obraDto) {
 		Obra obra = mapper.map(obraDto, Obra.class);
-		service.createObra(obra, obraDto.construtoraId());
+		Endereco endereco = mapper.map(obraDto.enderecoObra(), Endereco.class);
+		service.createObra(obra, obraDto.arquitetosId(), obraDto.construtoraId(), endereco);
 		ObraResponseDto response = mapper.map(obra, ObraResponseDto.class);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
@@ -87,26 +93,26 @@ public class ObraController {
 		service.deleteObra(id);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@PutMapping("/validacaoProfessora/{id}")
-	public ResponseEntity<ObraResponseDto> validacaoProfessora(@PathVariable Integer id){
+	public ResponseEntity<ObraResponseDto> validacaoProfessora(@PathVariable Integer id) {
 		Obra obra = service.validacaoProfessora(id);
 		ObraResponseDto response = mapper.map(obra, ObraResponseDto.class);
 		return ResponseEntity.ok(response);
 	}
-	
+
 	@PutMapping("/validacaoDPH/{id}")
-	public ResponseEntity<ObraResponseDto> validacaoDPH(@PathVariable Integer id){
+	public ResponseEntity<ObraResponseDto> validacaoDPH(@PathVariable Integer id) {
 		Obra obra = service.validacaoDPH(id);
 		ObraResponseDto response = mapper.map(obra, ObraResponseDto.class);
 		return ResponseEntity.ok(response);
 	}
-	
+
 	@GetMapping("/enums/{enumTipo}")
-	public ResponseEntity<List<String>> getOpcoesEnum(@PathVariable String enumTipo){
+	public ResponseEntity<List<String>> getOpcoesEnum(@PathVariable String enumTipo) {
 		List<String> opcoes;
-		
-		switch(enumTipo) {
+
+		switch (enumTipo) {
 			case "obraStatus":
 				opcoes = Arrays.asList(ObraStatus.values()).stream().map(value -> value.toString()).toList();
 				break;
@@ -119,9 +125,8 @@ public class ObraController {
 			default:
 				throw new EntityNotFoundException("Valor informado não pôde ser mapeado.");
 		}
-		
+
 		return ResponseEntity.ok(opcoes);
-		
 	}
 
 }

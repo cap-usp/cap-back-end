@@ -14,7 +14,9 @@ import br.com.usp.mac0472.cartografiapaulistana.model.Arquiteto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Construtora;
 import br.com.usp.mac0472.cartografiapaulistana.model.Endereco;
 import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
+import br.com.usp.mac0472.cartografiapaulistana.model.Referencia;
 import br.com.usp.mac0472.cartografiapaulistana.repository.ObraRepository;
+import br.com.usp.mac0472.cartografiapaulistana.repository.ReferenciaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
@@ -29,6 +31,9 @@ public class ObraService {
 	
 	@Autowired
 	private ArquitetoService arquitetoService;
+	
+	@Autowired
+	private ReferenciaRepository referenciaRepository;
 
 	public Page<Obra> readObras(Pageable pageable, Boolean validadasProfessora, Boolean validadasDph) {
 		return repository.findObras(pageable, validadasProfessora, validadasDph);
@@ -39,17 +44,22 @@ public class ObraService {
 	}
 
 	@Transactional
-	public Obra createObra(Obra obra, List<Integer> arquitetosId, Integer construtoraId, Endereco endereco) {
+	public Obra createObra(Obra obra, List<Integer> arquitetosId, Integer construtoraId, Endereco endereco, List<String> referenciasUrls) {
 		Construtora construtora = construtoraService.readConstrutora(construtoraId)
 				.orElseThrow(() -> new EntityNotFoundException("Construtora não encontrada."));
 		Set<Arquiteto> arquitetos = Set.copyOf(arquitetosId.stream().map(autoriaId -> {
 			return arquitetoService.readArquiteto(autoriaId).orElseThrow(() -> new EntityNotFoundException("Arquiteto não encontrado."));
 		}).toList());
+		List<Referencia> referencias = referenciasUrls.stream().map(referenciaUrl -> new Referencia(referenciaUrl)).toList();
 		obra.setConstrutora(construtora);
 		obra.setArquitetos(arquitetos);
 		obra.setValidadoDPH(false);
 		obra.setValidadoProfessora(false);
-		return repository.save(obra);
+		Obra obraSalva = repository.save(obra);
+		referencias.forEach(referencia -> referencia.setObra(obraSalva));
+		referenciaRepository.saveAll(referencias);
+		return obraSalva;
+		
 	}
 
 	@Transactional

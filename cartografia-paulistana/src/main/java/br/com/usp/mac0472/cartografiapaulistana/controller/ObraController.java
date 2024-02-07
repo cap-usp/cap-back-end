@@ -76,7 +76,8 @@ public class ObraController {
 	public ResponseEntity<ObraResponseDto> createObra(@RequestBody @Valid ObraCreateDto obraDto) {
 		Obra obra = mapper.map(obraDto, Obra.class);
 		Endereco endereco = mapper.map(obraDto.enderecoObra(), Endereco.class);
-		service.createObra(obra, obraDto.arquitetosId(), obraDto.construtoraId(), endereco);
+		List<String> referenciasUrls = obraDto.referenciasObra();
+		service.createObra(obra, obraDto.arquitetosId(), obraDto.construtoraId(), endereco, referenciasUrls);
 		ObraResponseDto response = mapper.map(obra, ObraResponseDto.class);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}

@@ -55,6 +55,7 @@ public class ObraService {
 		obra.setArquitetos(arquitetos);
 		obra.setValidadoDPH(false);
 		obra.setValidadoProfessora(false);
+		obra.setEndereco(endereco);
 		Obra obraSalva = repository.save(obra);
 		referencias.forEach(referencia -> referencia.setObra(obraSalva));
 		referenciaRepository.saveAll(referencias);

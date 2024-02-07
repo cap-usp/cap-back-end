@@ -9,7 +9,7 @@ public class ObraPageResponseDto {
 
 	private Integer id;
 	private String nomeOficial;
-	private List<String> autorias;
+	private List<String> arquitetosNomes;
 	private String usoOriginal;
 	private String municipio;
 	private Boolean validadoProfessora;

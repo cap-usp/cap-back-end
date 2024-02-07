@@ -28,7 +28,7 @@ public record ObraCreateDto(
 		Integer anoDemolicao,
 		Integer anoRestauro,
 		List<Integer> arquitetoReforma,
-		@NotEmpty List<String> referencias,
+		@NotEmpty List<String> referenciasObra,
 		@NotNull EnderecoCreateDto enderecoObra
 		) {
 

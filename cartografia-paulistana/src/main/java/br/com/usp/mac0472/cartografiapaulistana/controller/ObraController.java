@@ -2,6 +2,7 @@ package br.com.usp.mac0472.cartografiapaulistana.controller;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -51,6 +52,8 @@ public class ObraController {
 			@PathParam(value = "validadasProfessora") Boolean validadasProfessora, 
 			@PathParam(value = "validadasDph") Boolean validadasDph,
 			Pageable pageable) {
+		validadasProfessora = Objects.nonNull(validadasProfessora) ? validadasProfessora : false;
+		validadasDph = Objects.nonNull(validadasDph) ? validadasDph : false;
 		Page<Obra> obras = service.readObras(pageable, validadasProfessora, validadasDph);
 		List<ObraPageResponseDto> obrasDto = obras.stream().map(obra -> mapper.map(obra, ObraPageResponseDto.class))
 				.toList();

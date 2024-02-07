@@ -14,7 +14,6 @@ import br.com.usp.mac0472.cartografiapaulistana.model.Arquiteto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Construtora;
 import br.com.usp.mac0472.cartografiapaulistana.model.Endereco;
 import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
-import br.com.usp.mac0472.cartografiapaulistana.repository.EnderecoRepository;
 import br.com.usp.mac0472.cartografiapaulistana.repository.ObraRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -25,9 +24,6 @@ public class ObraService {
 	@Autowired
 	private ObraRepository repository;
 	
-	@Autowired
-	private EnderecoRepository enderecoRepository;
-
 	@Autowired
 	private ConstrutoraService construtoraService;
 	

@@ -10,7 +10,7 @@ public record ObraCreateDto(
 		@NotNull String latitude, 
 		@NotNull String longitude, 
 		@NotBlank String nomeOficial,
-		@NotEmpty List<Integer> arquitetoId,
+		@NotEmpty List<Integer> arquitetosId,
 		Integer anoProjeto,
 		Integer anoConstrucao, 
 		Integer condephaat, 
@@ -29,7 +29,7 @@ public record ObraCreateDto(
 		Integer anoRestauro,
 		List<Integer> arquitetoReforma,
 		@NotEmpty List<String> referencias,
-		@NotNull EnderecoCreateDto endereco
+		@NotNull EnderecoCreateDto enderecoObra
 		) {
 
 }

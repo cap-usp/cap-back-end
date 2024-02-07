@@ -1,6 +1,7 @@
 package br.com.usp.mac0472.cartografiapaulistana.config;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,7 +33,11 @@ public class SecurityFilter extends OncePerRequestFilter {
 		if (token != null) {
 			var login = tokenService.validateToken(token);
 			UserDetails user = userRepository.findByLogin(login);
-
+			if(Objects.isNull(user)) {
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				response.getWriter().write("Invalid authorization token.");
+				return;
+			}
 			var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		}

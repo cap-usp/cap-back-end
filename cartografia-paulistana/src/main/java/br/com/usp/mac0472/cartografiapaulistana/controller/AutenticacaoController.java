@@ -42,9 +42,11 @@ public class AutenticacaoController {
 		var auth = this.authenticationManager.authenticate(usernamePassword);
 		var token = tokenService.generateToken((Usuario) auth.getPrincipal());
 		
-		List<String> authorities = ((Usuario) auth.getPrincipal()).getAuthorities().stream().map(role -> role.toString()).toList();
+		Usuario usuario = (Usuario) auth.getPrincipal();
 		
-		var response = new LoginResponseDto(authorities, token);
+		List<String> authorities = usuario.getAuthorities().stream().map(role -> role.toString()).toList();
+		
+		var response = new LoginResponseDto(usuario.getId(), usuario.getLogin(), authorities, token);
 
 		return ResponseEntity.ok(response);
 	}

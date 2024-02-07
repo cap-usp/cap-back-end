@@ -1,13 +1,16 @@
 package br.com.usp.mac0472.cartografiapaulistana.dto.obra;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 public record ObraCreateDto(
-		@NotNull Double latitude, 
-		@NotNull Double longitude, 
+		@NotNull String latitude, 
+		@NotNull String longitude, 
 		@NotBlank String nomeOficial,
-		@NotNull Integer arquitetoId,
+		@NotEmpty List<Integer> arquitetosId,
 		Integer anoProjeto,
 		Integer anoConstrucao, 
 		Integer condephaat, 
@@ -17,10 +20,16 @@ public record ObraCreateDto(
 		@NotBlank String codigoOriginal,
 		String usoAtual,
 		String codigoAtual,
-		String condicao,
+		String status,
+		String escritorio,
+		String nomeAlternativo,
+		Integer construtoraId,
+		Integer dataUsoAtual,
 		Integer anoDemolicao,
-		Integer anoReforma,
-		@NotNull Integer construtoraId
+		Integer anoRestauro,
+		List<Integer> arquitetoReforma,
+		@NotEmpty List<String> referenciasObra,
+		@NotNull EnderecoCreateDto enderecoObra
 		) {
 
 }

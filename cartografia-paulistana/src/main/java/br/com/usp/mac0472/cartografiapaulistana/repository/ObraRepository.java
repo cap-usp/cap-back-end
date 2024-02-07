@@ -11,7 +11,7 @@ import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
 @Repository
 public interface ObraRepository extends JpaRepository<Obra, Integer> {
 
-	@Query("SELECT o FROM Obra o WHERE o.validadoProfessora = true AND o.validadoDPH = true")
-	Page<Obra> findObrasValidadas(Pageable pageable);
+	@Query("SELECT o FROM Obra o WHERE o.validadoProfessora = :validadasProfessora AND o.validadoDPH = :validadasDph")
+	Page<Obra> findObras(Pageable pageable, Boolean validadasProfessora, Boolean validadasDph);
 
 }

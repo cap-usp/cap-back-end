@@ -32,5 +32,9 @@ public class Referencia {
 	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "obra_id")
 	private Obra obra;
+	
+	public Referencia(String url) {
+		this.url = url;
+	}
 
 }

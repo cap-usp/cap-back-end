@@ -42,7 +42,7 @@ public class Arquiteto {
 	@Column(name = "sobrenome")
 	private String sobrenome;
 
-	@ManyToMany(cascade = { CascadeType.ALL })
+	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinTable(name = "arquiteto_obra", joinColumns = { @JoinColumn(name = "arquiteto_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "obra_id") })
 	private Set<Obra> obras = new HashSet<>();

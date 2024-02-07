@@ -110,7 +110,7 @@ public class Obra {
 	@JoinColumn(name = "construtora_id")
 	private Construtora construtora;
 
-	@ManyToMany(cascade = { CascadeType.ALL })
+	@ManyToMany(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinTable(name = "arquiteto_obra", joinColumns = { @JoinColumn(name = "obra_id") }, inverseJoinColumns = {
 			@JoinColumn(name = "arquiteto_id") })
 	private Set<Arquiteto> arquitetos = new HashSet<>();

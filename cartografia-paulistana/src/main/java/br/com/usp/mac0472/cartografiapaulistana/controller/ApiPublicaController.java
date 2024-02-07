@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraPageResponseDto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
 import br.com.usp.mac0472.cartografiapaulistana.service.ObraService;
+import br.com.usp.mac0472.cartografiapaulistana.utils.MapeadorUtil;
 
 @RestController
 @RequestMapping("api/publica")
@@ -32,7 +33,7 @@ public class ApiPublicaController {
 	public ResponseEntity<Page<ObraPageResponseDto>> getValidadas(Pageable pageable) {
 		Page<Obra> obras = obraService.readObras(pageable, true, true);
 		List<ObraPageResponseDto> obrasDto = obras.stream()
-				.map(obra -> mapper.map(obra, ObraPageResponseDto.class)).toList();
+				.map(obra -> MapeadorUtil.mapObraToPageResponse(obra, mapper)).toList();
 		Page<ObraPageResponseDto> response = PageableExecutionUtils.getPage(obrasDto, pageable,
 				() -> obras.getTotalElements());
 		return ResponseEntity.ok(response);

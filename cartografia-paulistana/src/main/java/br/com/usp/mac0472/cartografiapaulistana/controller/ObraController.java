@@ -32,6 +32,7 @@ import br.com.usp.mac0472.cartografiapaulistana.enums.ObraStatus;
 import br.com.usp.mac0472.cartografiapaulistana.model.Endereco;
 import br.com.usp.mac0472.cartografiapaulistana.model.Obra;
 import br.com.usp.mac0472.cartografiapaulistana.service.ObraService;
+import br.com.usp.mac0472.cartografiapaulistana.utils.MapeadorUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.websocket.server.PathParam;
@@ -49,13 +50,12 @@ public class ObraController {
 
 	@GetMapping
 	public ResponseEntity<Page<ObraPageResponseDto>> getObras(
-			@PathParam(value = "validadasProfessora") Boolean validadasProfessora, 
-			@PathParam(value = "validadasDph") Boolean validadasDph,
-			Pageable pageable) {
+			@PathParam(value = "validadasProfessora") Boolean validadasProfessora,
+			@PathParam(value = "validadasDph") Boolean validadasDph, Pageable pageable) {
 		validadasProfessora = Objects.nonNull(validadasProfessora) ? validadasProfessora : false;
 		validadasDph = Objects.nonNull(validadasDph) ? validadasDph : false;
 		Page<Obra> obras = service.readObras(pageable, validadasProfessora, validadasDph);
-		List<ObraPageResponseDto> obrasDto = obras.stream().map(obra -> mapper.map(obra, ObraPageResponseDto.class))
+		List<ObraPageResponseDto> obrasDto = obras.stream().map(obra -> MapeadorUtil.mapObraToPageResponse(obra, mapper))
 				.toList();
 		Page<ObraPageResponseDto> response = PageableExecutionUtils.getPage(obrasDto, pageable,
 				() -> obras.getTotalElements());
@@ -66,7 +66,7 @@ public class ObraController {
 	public ResponseEntity<ObraResponseDto> getObra(@PathVariable Integer id) {
 		Optional<Obra> obra = service.readObra(id);
 		if (obra.isPresent()) {
-			ObraResponseDto response = mapper.map(obra.get(), ObraResponseDto.class);
+			ObraResponseDto response = MapeadorUtil.mapObraToObraResponse(obra.get(), mapper);
 			return ResponseEntity.ok(response);
 		}
 		return ResponseEntity.notFound().build();
@@ -78,7 +78,7 @@ public class ObraController {
 		Endereco endereco = mapper.map(obraDto.enderecoObra(), Endereco.class);
 		List<String> referenciasUrls = obraDto.referenciasObra();
 		service.createObra(obra, obraDto.arquitetosId(), obraDto.construtoraId(), endereco, referenciasUrls);
-		ObraResponseDto response = mapper.map(obra, ObraResponseDto.class);
+		ObraResponseDto response = MapeadorUtil.mapObraToObraResponse(obra, mapper);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
@@ -86,7 +86,7 @@ public class ObraController {
 	public ResponseEntity<ObraResponseDto> updateObra(@PathVariable Integer id, @RequestBody ObraUpdateDto obraDto) {
 		Optional<Obra> updatedObra = service.updateObra(id, obraDto);
 		if (updatedObra.isPresent()) {
-			ObraResponseDto response = mapper.map(updatedObra.get(), ObraResponseDto.class);
+			ObraResponseDto response = MapeadorUtil.mapObraToObraResponse(updatedObra.get(), mapper);;
 			return ResponseEntity.ok(response);
 		}
 		return ResponseEntity.notFound().build();
@@ -101,14 +101,14 @@ public class ObraController {
 	@PutMapping("/validacaoProfessora/{id}")
 	public ResponseEntity<ObraResponseDto> validacaoProfessora(@PathVariable Integer id) {
 		Obra obra = service.validacaoProfessora(id);
-		ObraResponseDto response = mapper.map(obra, ObraResponseDto.class);
+		ObraResponseDto response = MapeadorUtil.mapObraToObraResponse(obra, mapper);
 		return ResponseEntity.ok(response);
 	}
 
 	@PutMapping("/validacaoDPH/{id}")
 	public ResponseEntity<ObraResponseDto> validacaoDPH(@PathVariable Integer id) {
 		Obra obra = service.validacaoDPH(id);
-		ObraResponseDto response = mapper.map(obra, ObraResponseDto.class);
+		ObraResponseDto response = MapeadorUtil.mapObraToObraResponse(obra, mapper);
 		return ResponseEntity.ok(response);
 	}
 

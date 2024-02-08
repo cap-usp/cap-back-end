@@ -44,9 +44,7 @@ public class AutenticacaoController {
 		
 		Usuario usuario = (Usuario) auth.getPrincipal();
 		
-		String role = Arrays.asList(usuario.getAuthorities()).get(0).toString();
-		
-		var response = new LoginResponseDto(usuario.getId(), usuario.getLogin(), token, role);
+		var response = new LoginResponseDto(usuario.getId(), usuario.getLogin(), token, usuario.getAuthorities().toString());
 
 		return ResponseEntity.ok(response);
 	}

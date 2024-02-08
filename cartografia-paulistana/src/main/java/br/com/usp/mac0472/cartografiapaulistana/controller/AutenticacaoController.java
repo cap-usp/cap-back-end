@@ -1,6 +1,5 @@
 package br.com.usp.mac0472.cartografiapaulistana.controller;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;

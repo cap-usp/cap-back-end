@@ -31,6 +31,7 @@ public abstract class MapeadorUtil {
 		obraResponse.setConstrutoraObra(construtoraNome);
 		obraResponse.setReferenciasObra(referencias);
 		obraResponse.setEnderecoObra(enderecoResponse);
+		obraResponse.setStatusObra(obra.getStatus().getNome());
 		return obraResponse;
 	}
 	
@@ -49,8 +50,8 @@ public abstract class MapeadorUtil {
 	private static EnderecoResponseDto getEnderecoResponse(Obra obra){
 		Endereco endereco = obra.getEndereco();
 		var enderecoResponse = new EnderecoResponseDto();
-		enderecoResponse.setEnderecoTipo(endereco.getEnderecoTipo());
-		enderecoResponse.setEnderecoTitulo(endereco.getEnderecoTitulo());
+		enderecoResponse.setEnderecoTipo(endereco.getEnderecoTipo().getNome());
+		enderecoResponse.setEnderecoTitulo(endereco.getEnderecoTitulo().getNome());
 		enderecoResponse.setLogradouro(endereco.getLogradouro());
 		enderecoResponse.setNumero(endereco.getNumero());
 		enderecoResponse.setComplemento(endereco.getComplemento());

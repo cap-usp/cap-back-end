@@ -1,6 +1,5 @@
 package br.com.usp.mac0472.cartografiapaulistana.service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -9,7 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraCreateDto;
 import br.com.usp.mac0472.cartografiapaulistana.dto.obra.ObraUpdateDto;
+import br.com.usp.mac0472.cartografiapaulistana.enums.EnderecoTipo;
+import br.com.usp.mac0472.cartografiapaulistana.enums.EnderecoTitulo;
+import br.com.usp.mac0472.cartografiapaulistana.enums.ObraStatus;
 import br.com.usp.mac0472.cartografiapaulistana.model.Arquiteto;
 import br.com.usp.mac0472.cartografiapaulistana.model.Construtora;
 import br.com.usp.mac0472.cartografiapaulistana.model.Endereco;
@@ -24,13 +27,13 @@ public class ObraService {
 
 	@Autowired
 	private ObraRepository repository;
-	
+
 	@Autowired
 	private ConstrutoraService construtoraService;
-	
+
 	@Autowired
 	private ArquitetoService arquitetoService;
-	
+
 	public Page<Obra> readObras(Pageable pageable, Boolean validadasProfessora, Boolean validadasDph) {
 		return repository.findObras(pageable, validadasProfessora, validadasDph);
 	}
@@ -40,21 +43,30 @@ public class ObraService {
 	}
 
 	@Transactional
-	public Obra createObra(Obra obra, List<Integer> arquitetosId, Integer construtoraId, Endereco endereco, List<String> referenciasUrls) {
-		Construtora construtora = construtoraService.readConstrutora(construtoraId)
+	public Obra createObra(Obra obra, ObraCreateDto obraDto, Endereco endereco) {
+		Construtora construtora = construtoraService.readConstrutora(obraDto.construtoraId())
 				.orElseThrow(() -> new EntityNotFoundException("Construtora não encontrada."));
-		Set<Arquiteto> arquitetos = Set.copyOf(arquitetosId.stream().map(autoriaId -> {
+		
+		Set<Arquiteto> arquitetos = Set.copyOf(obraDto.arquitetosId().stream().map(autoriaId -> {
 			return arquitetoService.readArquiteto(autoriaId).orElseThrow(() -> new EntityNotFoundException("Arquiteto não encontrado."));
 		}).toList());
-		Set<Referencia> referencias = Set.copyOf(referenciasUrls.stream().map(referenciaUrl -> new Referencia(referenciaUrl, obra)).toList());
+		
+		Set<Referencia> referencias = Set.copyOf(obraDto.referenciasObra().stream()
+				.map(referenciaUrl -> new Referencia(referenciaUrl, obra)).toList());
+		
+		obra.setStatus(ObraStatus.getByNome(obraDto.statusObra()));
+		
+		endereco.setEnderecoTipo(EnderecoTipo.getByNome(obraDto.enderecoObra().enderecoTipo()));
+		endereco.setEnderecoTitulo(EnderecoTitulo.getByNome(obraDto.enderecoObra().enderecoTitulo()));
+		
 		obra.setConstrutora(construtora);
 		obra.setArquitetos(arquitetos);
 		obra.setReferencias(referencias);
 		obra.setEndereco(endereco);
 		obra.setValidadoDPH(false);
 		obra.setValidadoProfessora(false);
-		Obra obraSalva = repository.save(obra);
-		return obraSalva;
+		
+		return repository.save(obra);
 	}
 
 	@Transactional

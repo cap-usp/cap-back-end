@@ -152,8 +152,8 @@ public class Obra {
 		if (nonNull(updatedObra.codigoAtual())) {
 			this.codigoAtual = updatedObra.codigoAtual();
 		}
-		if (nonNull(updatedObra.status())) {
-			this.status = ObraStatus.valueOf(updatedObra.status());
+		if (nonNull(updatedObra.statusObra())) {
+			this.status = ObraStatus.valueOf(updatedObra.statusObra());
 		}
 	}
 

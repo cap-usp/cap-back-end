@@ -76,7 +76,7 @@ public class ObraController {
 	public ResponseEntity<ObraResponseDto> createObra(@RequestBody @Valid ObraCreateDto obraDto) {
 		Obra obra = mapper.map(obraDto, Obra.class);
 		Endereco endereco = mapper.map(obraDto.enderecoObra(), Endereco.class);
-		service.createObra(obra, obraDto.arquitetosId(), obraDto.construtoraId(), endereco, obraDto.referenciasObra());
+		service.createObra(obra, obraDto, endereco);
 		ObraResponseDto response = MapeadorUtil.mapObraToObraResponse(obra, mapper);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
@@ -117,13 +117,13 @@ public class ObraController {
 
 		switch (enumTipo) {
 			case "obraStatus":
-				opcoes = Arrays.asList(ObraStatus.values()).stream().map(value -> value.toString()).toList();
+				opcoes = Arrays.asList(ObraStatus.values()).stream().map(value -> value.getNome()).toList();
 				break;
 			case "enderecoTipo":
-				opcoes = Arrays.asList(EnderecoTipo.values()).stream().map(value -> value.toString()).toList();
+				opcoes = Arrays.asList(EnderecoTipo.values()).stream().map(value -> value.getNome()).toList();
 				break;
 			case "enderecoTitulo":
-				opcoes = Arrays.asList(EnderecoTitulo.values()).stream().map(value -> value.toString()).toList();
+				opcoes = Arrays.asList(EnderecoTitulo.values()).stream().map(value -> value.getNome()).toList();
 				break;
 			default:
 				throw new EntityNotFoundException("Valor informado não pôde ser mapeado.");

@@ -21,7 +21,7 @@ public class ObraResponseDto {
 	private String codigoOriginal;
 	private String usoAtual;
 	private String codigoAtual;
-	private String status;
+	private String statusObra;
 	private String escritorio;
 	private String nomeAlternativo;
 	private String construtoraObra;

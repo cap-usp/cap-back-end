@@ -16,7 +16,7 @@ public record ObraUpdateDto(
 		String codigoOriginal,
 		String usoAtual,
 		String codigoAtual,
-		String status,
+		String statusObra,
 		String escritorio,
 		String nomeAlternativo,
 		Integer construtoraId,

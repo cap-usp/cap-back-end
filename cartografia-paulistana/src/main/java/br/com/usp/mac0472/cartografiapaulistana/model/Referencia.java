@@ -33,8 +33,9 @@ public class Referencia {
 	@JoinColumn(name = "obra_id")
 	private Obra obra;
 	
-	public Referencia(String url) {
+	public Referencia(String url, Obra obra) {
 		this.url = url;
+		this.obra = obra;
 	}
 
 }

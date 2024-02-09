@@ -1,6 +1,5 @@
 package br.com.usp.mac0472.cartografiapaulistana.controller;
 
-import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +43,7 @@ public class AutenticacaoController {
 		
 		Usuario usuario = (Usuario) auth.getPrincipal();
 		
-		List<String> authorities = usuario.getAuthorities().stream().map(role -> role.toString()).toList();
-		
-		var response = new LoginResponseDto(usuario.getId(), usuario.getLogin(), authorities, token);
+		var response = new LoginResponseDto(usuario.getId(), usuario.getLogin(), token, usuario.getAuthorities().toString());
 
 		return ResponseEntity.ok(response);
 	}

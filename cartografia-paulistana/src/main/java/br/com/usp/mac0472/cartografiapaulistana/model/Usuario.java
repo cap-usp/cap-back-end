@@ -78,6 +78,9 @@ public class Usuario implements UserDetails {
 		if(StringUtils.isNotBlank(updatedUsuario.email())){
 			this.email = updatedUsuario.email();
 		}
+		if(StringUtils.isNotBlank(updatedUsuario.autorizacao())){
+			this.role = UsuarioRole.valueOf(updatedUsuario.autorizacao().toUpperCase());
+		}
 	}
 
 	@Override

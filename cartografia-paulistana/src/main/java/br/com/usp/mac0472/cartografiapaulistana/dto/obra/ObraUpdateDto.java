@@ -25,7 +25,9 @@ public record ObraUpdateDto(
 		Integer anoRestauro,
 		List<Integer> arquitetoReforma,
 		List<String> referencias,
-		EnderecoCreateDto endereco
+		EnderecoCreateDto endereco,
+		Boolean validadoProfessora,
+		Boolean validadoDph
 		) {
 
 }

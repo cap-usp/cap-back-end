@@ -155,6 +155,12 @@ public class Obra {
 		if (nonNull(updatedObra.statusObra())) {
 			this.status = ObraStatus.valueOf(updatedObra.statusObra());
 		}
+		if (nonNull(updatedObra.validadoProfessora())) {
+			this.validadoProfessora = updatedObra.validadoProfessora();
+		}
+		if (nonNull(updatedObra.validadoDph())) {
+			this.validadoDPH = updatedObra.validadoDph();
+		}
 	}
 
 }

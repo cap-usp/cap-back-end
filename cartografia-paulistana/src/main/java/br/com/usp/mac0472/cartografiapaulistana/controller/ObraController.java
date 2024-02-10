@@ -97,20 +97,6 @@ public class ObraController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@PutMapping("/validacaoProfessora/{id}")
-	public ResponseEntity<ObraResponseDto> validacaoProfessora(@PathVariable Integer id) {
-		Obra obra = service.validacaoProfessora(id);
-		ObraResponseDto response = MapeadorUtil.mapObraToObraResponse(obra, mapper);
-		return ResponseEntity.ok(response);
-	}
-
-	@PutMapping("/validacaoDPH/{id}")
-	public ResponseEntity<ObraResponseDto> validacaoDPH(@PathVariable Integer id) {
-		Obra obra = service.validacaoDPH(id);
-		ObraResponseDto response = MapeadorUtil.mapObraToObraResponse(obra, mapper);
-		return ResponseEntity.ok(response);
-	}
-
 	@GetMapping("/enums/{enumTipo}")
 	public ResponseEntity<List<String>> getOpcoesEnum(@PathVariable String enumTipo) {
 		List<String> opcoes;
